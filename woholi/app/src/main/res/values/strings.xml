@@ -2,4 +2,6 @@
     <string name="app_name">woholi</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name = "firebase_web_client_id">743545746793-qb64nhgae602fhd3lnfbipluc1ke3j1v.apps.googleusercontent.com</string>
 </resources>

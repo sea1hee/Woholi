@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "743545746793",
+    "project_id": "woholi",
+    "storage_bucket": "woholi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743545746793:android:0046d61a0f2f115b46f9f8",
+        "android_client_info": {
+          "package_name": "com.example.woholi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743545746793-qb64nhgae602fhd3lnfbipluc1ke3j1v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfSHkxQzyIOFM2xF_HdqB4-KASl9Jxzt4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743545746793-qb64nhgae602fhd3lnfbipluc1ke3j1v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
