@@ -29,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
+        // Google Login
         auth = FirebaseAuth.getInstance()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.firebase_web_client_id))
@@ -63,9 +64,17 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if (account != null){
+            loginSuccess()
+        }
+    }
 
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
+        //deprecated
         startActivityForResult(signInIntent, GOOGLE_REQUEST_CODE)
     }
 
@@ -96,7 +105,7 @@ class LoginActivity : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "로그인 성공")
                         val user = auth!!.currentUser
-                        loginSuccess()
+                        loginSuccess_newusers()
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -104,8 +113,14 @@ class LoginActivity : AppCompatActivity() {
                 }
     }
 
+    private fun loginSuccess_newusers(){
+        val intent = Intent(this, SignUpUserInfoActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     private fun loginSuccess(){
-        val intent = Intent(this,MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
