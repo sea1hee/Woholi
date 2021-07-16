@@ -62,28 +62,6 @@
             android:layout_marginTop="10dp"
             android:inputType="textPassword" />
 
-        <EditText
-            android:id="@+id/editTextTextPersonName2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="English Name"
-            android:layout_marginTop="10dp"
-            android:inputType="textPersonName" />
-
-        <Spinner
-            android:id="@+id/spnLocation"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/editTextDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginTop="10dp"
-            android:inputType="date"/>
 
     </LinearLayout>
 
