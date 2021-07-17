@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nvg_home"
+        android:icon="@drawable/home"
+        android:title="home" />
+
+    <item
+        android:id="@+id/nvg_checkList"
+        android:icon="@drawable/checklist"
+        android:title="check" />
+
+    <item
+        android:id="@+id/nvg_diary"
+        android:icon="@drawable/diary"
+        android:title="diary" />
+
+    <item
+        android:id="@+id/nvg_vs"
+        android:icon="@drawable/vs"
+        android:title="vs" />
+
+    <item
+        android:id="@+id/nvg_userinfo"
+        android:icon="@drawable/userinfo"
+        android:title="user" />
+
+</menu>
