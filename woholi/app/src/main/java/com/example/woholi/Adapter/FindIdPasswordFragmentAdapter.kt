@@ -1,4 +1,4 @@
-package com.example.woholi.FindIdPassword
+package com.example.woholi.Adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

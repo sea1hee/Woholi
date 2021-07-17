@@ -2,6 +2,7 @@ package com.example.woholi.FindIdPassword
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.woholi.Adapter.FindIdPasswordFragmentAdapter
 import com.example.woholi.databinding.ActivityFindIdPasswordBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
