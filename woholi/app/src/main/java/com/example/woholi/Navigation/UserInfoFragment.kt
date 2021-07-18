@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.example.woholi.CurrentUser
 import com.example.woholi.LoginActivity
 import com.example.woholi.MainActivity
 import com.example.woholi.R
@@ -17,8 +18,6 @@ import com.google.firebase.auth.UserInfo
 class UserInfoFragment : Fragment() {
 
     private var binding : FragmentUserInfoBinding? = null
-    private lateinit var logOut: Button
-    private lateinit var deleteLog: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +25,7 @@ class UserInfoFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?ㅗ ㅈ
     ): View? {
         binding = FragmentUserInfoBinding.inflate(inflater, container, false)
         return binding!!.root
@@ -42,13 +41,10 @@ class UserInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        logOut = view.findViewById(R.id.btn_logout)
-        deleteLog = view.findViewById((R.id.btn_delete_log))
-
-        logOut.setOnClickListener {
+        binding!!.btnLogout.setOnClickListener {
             (activity as MainActivity).logOut()
         }
-        deleteLog.setOnClickListener {
+        binding!!.btnDeleteLog.setOnClickListener {
             (activity as MainActivity).deleteLog()
         }
     }
