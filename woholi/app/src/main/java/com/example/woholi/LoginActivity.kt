@@ -5,14 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.example.woholi.FindIdPassword.FindIdPasswordActivity
 import com.example.woholi.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,6 +24,8 @@ class LoginActivity : AppCompatActivity() {
     val GOOGLE_REQUEST_CODE = 99
     val TAG = "googleLogin"
     private lateinit var googleSignInClient: GoogleSignInClient
+
+    val db = Firebase.firestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,35 +44,13 @@ class LoginActivity : AppCompatActivity() {
             signIn()
         }
 
-        binding.btnLogin.setOnClickListener {
-            // 서버 추가
-            // 입력한 아이디와 비밀번호가 맞는지 확인
-            // 성공했다면
-            // sharepre에 id, 닉네임 등 정 저장
-            val intent_toMain = Intent(this, MainActivity::class.java)
-            startActivity(intent_toMain)
-            finish()
-            // 아니라면
-            // 토스트 띄우기
-        }
-
-        binding.txFindIdPassword.setOnClickListener {
-            val intent_toFindIdPassword = Intent(this, FindIdPasswordActivity::class.java)
-            startActivity(intent_toFindIdPassword)
-        }
-
-        binding.btnSingup.setOnClickListener {
-            val intent_toSignUp = Intent(this, SignUpActivity::class.java)
-            startActivity(intent_toSignUp)
-            finish()
-        }
     }
 
     override fun onStart() {
         super.onStart()
         val curUser = FirebaseAuth.getInstance().currentUser
         if (curUser != null){
-            loginSuccess()
+            checkIsNewUser(curUser)
             Log.d(TAG, "onStart")
         }
     }
@@ -106,7 +88,7 @@ class LoginActivity : AppCompatActivity() {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "로그인 성공")
                         val user = auth!!.currentUser
-                        loginSuccessforNewUsers()
+                        checkIsNewUser(user)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -114,6 +96,36 @@ class LoginActivity : AppCompatActivity() {
                 }
     }
 
+    private fun checkIsNewUser(curUser: FirebaseUser?) {
+
+        curUser?.let {
+            CurrentUser.uid = curUser.uid
+            CurrentUser.email = curUser.email
+            CurrentUser.name = curUser.displayName
+            CurrentUser.profile = curUser.photoUrl
+
+            val docRef = db.collection("users").document(CurrentUser.uid)
+            docRef.get()
+                .addOnSuccessListener { document ->
+                    Log.d(TAG, "유저 로그인 기록 조회 성공")
+                    if (document.exists()){
+                        loginSuccess()
+                    }
+                    else{
+
+                        db.collection("users").document(CurrentUser.uid)
+                            .set(CurrentUser)
+                        loginSuccessforNewUsers()
+                    }
+                }
+                .addOnFailureListener{ exception ->
+                    Log.d(TAG, "get failed with ", exception)
+                }
+
+        }
+
+
+    }
     private fun loginSuccessforNewUsers(){
         val intent = Intent(this, SignUpUserInfoActivity::class.java)
         startActivity(intent)
