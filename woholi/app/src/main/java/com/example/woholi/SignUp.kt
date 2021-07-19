@@ -93,9 +93,16 @@ class SignUp : AppCompatActivity() {
         setProfile()
 
 
-        binding.button.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             updateDB()
             val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        binding.btnBack.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
