@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
@@ -103,19 +104,20 @@ class LoginActivity : AppCompatActivity() {
             CurrentUser.uid = curUser.uid
             CurrentUser.email = curUser.email
             CurrentUser.name = curUser.displayName
-            CurrentUser.profile = curUser.photoUrl
+            CurrentUser.profile = curUser.photoUrl?.toString()
 
             val docRef = db.collection("users").document(CurrentUser.uid)
             docRef.get()
                 .addOnSuccessListener { document ->
                     Log.d(TAG, "유저 로그인 기록 조회 성공")
                     if (document.exists()){
+                        CurrentUser.englishName = document.data!!.get("englishName").toString()
+                        CurrentUser.birth = document.data!!.get("birth").toString()
+                        CurrentUser.departure = document.data!!.get("departure").toString()
+                        CurrentUser.location = document.data!!.get("location").toString()
                         loginSuccess()
                     }
                     else{
-
-                        db.collection("users").document(CurrentUser.uid)
-                            .set(CurrentUser)
                         loginSuccessforNewUsers()
                     }
                 }
