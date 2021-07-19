@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
@@ -130,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
     private fun loginSuccessforNewUsers(){
-        val intent = Intent(this, SignUpUserInfoActivity::class.java)
+        val intent = Intent(this, SignUp::class.java)
         startActivity(intent)
         finish()
     }
