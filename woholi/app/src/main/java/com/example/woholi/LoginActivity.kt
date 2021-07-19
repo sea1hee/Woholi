@@ -101,15 +101,15 @@ class LoginActivity : AppCompatActivity() {
 
         curUser?.let {
             CurrentUser.uid = curUser.uid
-            CurrentUser.email = curUser.email
-            CurrentUser.name = curUser.displayName
-            CurrentUser.profile = curUser.photoUrl?.toString()
 
             val docRef = db.collection("users").document(CurrentUser.uid)
             docRef.get()
                 .addOnSuccessListener { document ->
                     Log.d(TAG, "유저 로그인 기록 조회 성공")
                     if (document.exists()){
+                        CurrentUser.email = document.data!!.get("email").toString()
+                        CurrentUser.name = document.data!!.get("name").toString()
+                        CurrentUser.profile = document.data!!.get("profile").toString()
                         CurrentUser.englishName = document.data!!.get("englishName").toString()
                         CurrentUser.birth = document.data!!.get("birth").toString()
                         CurrentUser.departure = document.data!!.get("departure").toString()
@@ -117,6 +117,9 @@ class LoginActivity : AppCompatActivity() {
                         loginSuccess()
                     }
                     else{
+                        CurrentUser.email = curUser.email
+                        CurrentUser.name = curUser.displayName
+                        CurrentUser.profile = curUser.photoUrl.toString()
                         loginSuccessforNewUsers()
                     }
                 }
