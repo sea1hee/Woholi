@@ -3,11 +3,14 @@ package com.example.woholi
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.woholi.Model.CurrentUser
 import com.example.woholi.Navigation.*
 import com.example.woholi.databinding.ActivityLoginBinding
 import com.example.woholi.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity(){
 
@@ -70,6 +73,9 @@ class MainActivity : AppCompatActivity(){
                     if (task.isSuccessful) {
                     }
                 }
+ㅕㅑ
+        Firebase.firestore.collection("users").document(CurrentUser.uid)
+            .delete()
         logOut()
     }
 }
