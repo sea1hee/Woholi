@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(){
                     if (task.isSuccessful) {
                     }
                 }
-ㅕㅑ
+
         Firebase.firestore.collection("users").document(CurrentUser.uid)
             .delete()
         logOut()
