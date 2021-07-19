@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
+import com.bumptech.glide.Glide
 import com.example.woholi.Model.CurrentUser
 import com.example.woholi.databinding.ActivitySignUpUserInfoBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -88,7 +89,8 @@ class SignUpUserInfoActivity : AppCompatActivity() {
         var adapt = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, spnData)
         binding.spnLocation.adapter = adapt
 
-        binding.imageView.setImageURI(Uri.parse(CurrentUser.profile))
+
+        setProfile()
 
 
         binding.button.setOnClickListener {
@@ -157,6 +159,11 @@ class SignUpUserInfoActivity : AppCompatActivity() {
             }
             .show()
         return dialogId
+    }
+
+
+    fun setProfile(){
+        Glide.with(this).load(CurrentUser.profile).into(binding.imageView)
     }
 
 
