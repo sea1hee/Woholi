@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.woholi.Model.CurrentUser
 import com.example.woholi.Navigation.*
+import com.example.woholi.Navigation.checklist.shopping.NewShoppingFragment
 import com.example.woholi.databinding.ActivityLoginBinding
 import com.example.woholi.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -55,6 +56,8 @@ class MainActivity : AppCompatActivity(){
                     .commit()
             4 -> supportFragmentManager.beginTransaction()
                     .replace(R.id.frameLayout, userInfoFragment).commit()
+            5 -> supportFragmentManager.beginTransaction()
+                .add(R.id.frameLayout, NewShoppingFragment()).commit()
         }
     }
 
