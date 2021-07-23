@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.woholi.databinding.FragmentShoppingListBinding
 import com.example.woholi.Model.Check
 import com.example.woholi.Model.CurrentUser
 import com.example.woholi.Model.ShoppingList
-import com.example.woholi.databinding.FragmentShoppingListBinding
 import com.google.android.gms.tasks.Task
-import com.google.api.Distribution
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -23,7 +21,7 @@ import kotlinx.coroutines.tasks.await
 
 class ShoppingListFragment : Fragment() {
 
-    private var binding: FragmentShoppingListBinding? = null
+    lateinit var binding: FragmentShoppingListBinding
     val adapter: ShoppingListAdapter = ShoppingListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,37 +34,48 @@ class ShoppingListFragment : Fragment() {
     ): View? {
         binding = FragmentShoppingListBinding.inflate(inflater, container, false)
 
-        adapter.shoppingList = mutableListOf()
-        adapter.shoppingList.add(ShoppingList("2021-07-24"))
-        binding!!.recyclerView.adapter = adapter
-        binding!!.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        //CoroutineScope(Dispatchers.Main).launch {
-         //   val deferred = readRoutine().await().documents
-          //  initUI(deferred)
-        //}
-
-        return binding!!.root
+        init()
+        return binding.root
     }
-/*
+
+
+    fun init(){
+        CoroutineScope(Dispatchers.Main).launch {
+            val deferred = readRoutine().await().documents
+            if(deferred != null) {
+                for ( document in deferred){
+                    val newShoppingList = ShoppingList()
+                    newShoppingList.date = document.id
+                    val deffered2 = readRoutine2(document.id).await().documents
+                    for (document2 in deffered2) {
+                        newShoppingList.checks.add(
+                            Check(
+                                document2.id,
+                                document2.data?.get("isChecked").toString().toBoolean()
+                            )
+                        )
+                    }
+                    addShoppingList(newShoppingList)
+                }
+            }
+            binding.recyclerView.adapter = adapter
+            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
     suspend fun readRoutine(): Task<QuerySnapshot> {
         return Firebase.firestore.collection("users").document(CurrentUser.uid)
-                .collection("checklist").document("travel").collection()
-                .whereEqualTo("isChecked", false)
-                .get()
+            .collection("checklist").document("shoppinglist").collection("first")
+            .get()
     }
 
-
-
-    fun initUI(taskFalse: MutableList<DocumentSnapshot>){
-        if (taskFalse != null) {
-            for (document in taskFalse){
-                adapter.checkList.add(Check("${document.id}", false))
-            }
-        }
-        binding!!.recyclerView.adapter = adapter
-        binding!!.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    suspend fun readRoutine2(documentName: String): Task<QuerySnapshot> {
+        return Firebase.firestore.collection("users").document(CurrentUser.uid)
+            .collection("checklist").document("shoppinglist").collection("first")
+            .document(documentName).collection("second").get()
     }
-    */
+
+    fun addShoppingList(newList: ShoppingList){
+        adapter.shoppingList.add(newList)
+    }
 
 }
