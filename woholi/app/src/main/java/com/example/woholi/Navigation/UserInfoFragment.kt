@@ -24,12 +24,6 @@ class UserInfoFragment : Fragment() {
         return binding!!.root
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UserInfoFragment().apply {
-            }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
