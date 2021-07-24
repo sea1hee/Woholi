@@ -35,10 +35,10 @@ class TCheckListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = FragmentTCheckListBinding.inflate(inflater, container, false)
-
+        adapter.checkList = mutableListOf()
 
         var documentName = arguments?.getString("title")
-
+        adapter.title = documentName!!
         CoroutineScope(Dispatchers.Main).launch {
             val deferred = readRoutine(documentName).await().documents
             val deferred2 = readRoutine2(documentName).await().documents
