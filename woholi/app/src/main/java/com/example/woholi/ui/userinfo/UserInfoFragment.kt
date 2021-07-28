@@ -1,11 +1,11 @@
-package com.example.woholi.Navigation
+package com.example.woholi.ui.userinfo
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.woholi.MainActivity
+import com.example.woholi.ui.MainActivity
 import com.example.woholi.databinding.FragmentUserInfoBinding
 
 class UserInfoFragment : Fragment() {

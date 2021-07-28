@@ -1,13 +1,17 @@
-package com.example.woholi
+package com.example.woholi.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.woholi.Model.CurrentUser
-import com.example.woholi.Navigation.*
-import com.example.woholi.Navigation.checklist.shopping.NewShoppingFragment
-import com.example.woholi.databinding.ActivityLoginBinding
+import com.example.woholi.R
 import com.example.woholi.databinding.ActivityMainBinding
+import com.example.woholi.model.CurrentUser
+import com.example.woholi.ui.checklist.CheckListFragment
+import com.example.woholi.ui.diary.DiaryFragment
+import com.example.woholi.ui.home.HomeFragment
+import com.example.woholi.ui.login.LoginActivity
+import com.example.woholi.ui.userinfo.UserInfoFragment
+import com.example.woholi.ui.vs.VsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -17,7 +21,7 @@ class MainActivity : AppCompatActivity(){
 
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
-    val homeFragemnt by lazy { HomeFragment()}
+    val homeFragemnt by lazy { HomeFragment() }
     val checkListFragment by lazy { CheckListFragment() }
     val diaryFragment by lazy{ DiaryFragment() }
     val vsFragment by lazy { VsFragment() }
@@ -56,8 +60,6 @@ class MainActivity : AppCompatActivity(){
                     .commit()
             4 -> supportFragmentManager.beginTransaction()
                     .replace(R.id.frameLayout, userInfoFragment).commit()
-            5 -> supportFragmentManager.beginTransaction()
-                .add(R.id.frameLayout, NewShoppingFragment()).commit()
         }
     }
 

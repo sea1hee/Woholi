@@ -1,13 +1,13 @@
-package com.example.woholi.Navigation.checklist
+package com.example.woholi.ui.checklist.travel
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.woholi.R
-import com.example.woholi.ViewPagerAdapter
+import com.example.woholi.adapter.ViewPagerAdapter
 import com.example.woholi.databinding.FragmentTravelItemBinding
+import com.example.woholi.ui.checklist.travel.TCheckListFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class TravelItemFragment : Fragment() {

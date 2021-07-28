@@ -1,8 +1,9 @@
-package com.example.woholi
+package com.example.woholi.ui.login
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.woholi.R
 
 class SplashActivity: AppCompatActivity() {
 

@@ -1,11 +1,13 @@
-package com.example.woholi
+package com.example.woholi.ui.login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.example.woholi.Model.CurrentUser
+import com.example.woholi.ui.MainActivity
+import com.example.woholi.R
+import com.example.woholi.model.CurrentUser
 import com.example.woholi.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

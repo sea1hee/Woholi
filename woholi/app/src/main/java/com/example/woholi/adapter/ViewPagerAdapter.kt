@@ -1,4 +1,4 @@
-package com.example.woholi
+package com.example.woholi.adapter
 
 
 import androidx.fragment.app.Fragment

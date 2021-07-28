@@ -1,4 +1,4 @@
-package com.example.woholi.Navigation.checklist.shopping
+package com.example.woholi.ui.checklist.shopping
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.woholi.databinding.FragmentShoppingListBinding
-import com.example.woholi.Model.Check
-import com.example.woholi.Model.CurrentUser
-import com.example.woholi.Model.ShoppingList
+import com.example.woholi.model.Check
+import com.example.woholi.model.CurrentUser
+import com.example.woholi.model.ShoppingList
+import com.example.woholi.navigation.checklist.shopping.ShoppingListAdapter
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore

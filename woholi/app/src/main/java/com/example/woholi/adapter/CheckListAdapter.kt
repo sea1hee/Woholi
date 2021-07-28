@@ -1,11 +1,11 @@
-package com.example.woholi.Navigation.checklist
+package com.example.woholi.navigation.checklist
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.woholi.Model.Check
-import com.example.woholi.Model.CurrentUser
+import com.example.woholi.model.Check
+import com.example.woholi.model.CurrentUser
 import com.example.woholi.databinding.RecyclerTCheckBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase

@@ -1,7 +1,4 @@
-package com.example.woholi.Model
-
-import android.net.Uri
-import java.net.URL
+package com.example.woholi.model
 
 object CurrentUser {
     lateinit var uid: String

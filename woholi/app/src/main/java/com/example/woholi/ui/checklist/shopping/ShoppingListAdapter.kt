@@ -1,20 +1,20 @@
-package com.example.woholi.Navigation.checklist.shopping
+package com.example.woholi.navigation.checklist.shopping
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.woholi.Model.Check
-import com.example.woholi.Model.CurrentUser
-import com.example.woholi.Model.ShoppingList
+import com.example.woholi.model.Check
+import com.example.woholi.model.CurrentUser
+import com.example.woholi.model.ShoppingList
 import com.example.woholi.databinding.RecyclerShoppingDailyBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class ShoppingListAdapter:RecyclerView.Adapter<Holder>() {
     var shoppingList = mutableListOf<ShoppingList>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = RecyclerShoppingDailyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Holder(binding)
@@ -23,6 +23,12 @@ class ShoppingListAdapter:RecyclerView.Adapter<Holder>() {
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val shoppinglist = shoppingList[position]
         holder.setShoppingList(shoppinglist, position)
+
+        holder.binding.txDate.setOnLongClickListener {
+            holder.binding.txDate.text = "hello"
+            shoppingList[position].date = holder.binding.txDate.text.toString()
+            true
+        }
 
     }
 
@@ -68,6 +74,8 @@ class Holder(val binding: RecyclerShoppingDailyBinding): RecyclerView.ViewHolder
 
             }
         }
+
+
 
     }
 }

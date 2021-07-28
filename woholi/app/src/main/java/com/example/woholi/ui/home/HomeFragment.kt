@@ -1,11 +1,10 @@
-package com.example.woholi.Navigation
+package com.example.woholi.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.woholi.R
 import com.example.woholi.databinding.FragmentHomeBinding
 
 // TODO: Rename parameter arguments, choose names that match

@@ -1,20 +1,16 @@
-package com.example.woholi.Navigation.checklist
+package com.example.woholi.ui.checklist.travel
 
-import android.graphics.DiscretePathEffect
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.woholi.Model.Check
-import com.example.woholi.Model.CurrentUser
-import com.example.woholi.R
+import com.example.woholi.model.Check
+import com.example.woholi.model.CurrentUser
 import com.example.woholi.databinding.FragmentTCheckListBinding
-import com.example.woholi.databinding.FragmentTravelItemBinding
+import com.example.woholi.navigation.checklist.CheckListAdapter
 import com.google.android.gms.tasks.Task
-import com.google.firebase.FirebaseException
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore

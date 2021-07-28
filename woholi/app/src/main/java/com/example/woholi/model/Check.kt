@@ -1,4 +1,4 @@
-package com.example.woholi.Model
+package com.example.woholi.model
 
 data class Check(
     var content: String = "",

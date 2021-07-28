@@ -1,4 +1,4 @@
-package com.example.woholi.Navigation
+package com.example.woholi.ui.vs
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

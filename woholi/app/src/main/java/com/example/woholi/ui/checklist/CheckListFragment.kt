@@ -1,4 +1,4 @@
-package com.example.woholi.Navigation
+package com.example.woholi.ui.checklist
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -6,18 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
 import android.widget.EditText
-import com.example.woholi.MainActivity
-import com.example.woholi.Model.CurrentUser
-import com.example.woholi.Navigation.checklist.shopping.ShoppingListFragment
-import com.example.woholi.Navigation.checklist.TravelItemFragment
-import com.example.woholi.Navigation.checklist.shopping.NewShoppingFragment
+import com.example.woholi.model.CurrentUser
+import com.example.woholi.ui.checklist.shopping.ShoppingListFragment
+import com.example.woholi.ui.checklist.travel.TravelItemFragment
 import com.example.woholi.R
 import com.example.woholi.databinding.FragmentCheckListBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.text.SimpleDateFormat
 import java.util.*
 
 class CheckListFragment : Fragment() {

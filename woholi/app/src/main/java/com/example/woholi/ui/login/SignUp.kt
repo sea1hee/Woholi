@@ -1,10 +1,8 @@
-package com.example.woholi
+package com.example.woholi.ui.login
 
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,13 +10,14 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import com.bumptech.glide.Glide
-import com.example.woholi.Model.CurrentUser
+import com.example.woholi.ui.MainActivity
+import com.example.woholi.R
+import com.example.woholi.model.CurrentUser
 import com.example.woholi.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.time.LocalDate.*
 import java.time.format.DateTimeFormatter
 import java.util.*
