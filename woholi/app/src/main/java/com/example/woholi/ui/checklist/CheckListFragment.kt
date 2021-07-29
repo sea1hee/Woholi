@@ -20,6 +20,9 @@ class CheckListFragment : Fragment() {
 
     private var binding : FragmentCheckListBinding? = null
 
+    private val travelFragment by lazy { TravelItemFragment() }
+    private val shoppingFragment by lazy { ShoppingListFragment() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -30,15 +33,15 @@ class CheckListFragment : Fragment() {
     ): View? {
         binding = FragmentCheckListBinding.inflate(inflater, container, false)
 
-        childFragmentManager.beginTransaction().add(R.id.frameLayout_checklist, TravelItemFragment()).commit()
+        childFragmentManager.beginTransaction().add(R.id.frameLayout_checklist, travelFragment).commit()
         binding!!.fabAdd.visibility = View.INVISIBLE
 
         binding!!.btnShopping.setOnClickListener {
-            childFragmentManager.beginTransaction().replace(R.id.frameLayout_checklist, ShoppingListFragment()).commit()
+            childFragmentManager.beginTransaction().replace(R.id.frameLayout_checklist, shoppingFragment).commit()
             binding!!.fabAdd.visibility = View.VISIBLE
         }
         binding!!.btnTravel.setOnClickListener {
-            childFragmentManager.beginTransaction().replace(R.id.frameLayout_checklist, TravelItemFragment()).commit()
+            childFragmentManager.beginTransaction().replace(R.id.frameLayout_checklist, travelFragment).commit()
             binding!!.fabAdd.visibility = View.INVISIBLE
             //transaction.replace(R.id.frameLayout_checklist, TravelItemFragment()).commit()
         }

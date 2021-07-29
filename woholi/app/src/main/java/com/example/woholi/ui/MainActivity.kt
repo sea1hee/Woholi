@@ -1,13 +1,18 @@
 package com.example.woholi.ui
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.load.engine.Resource
 import com.example.woholi.R
 import com.example.woholi.databinding.ActivityMainBinding
 import com.example.woholi.model.CurrentUser
 import com.example.woholi.ui.checklist.CheckListFragment
+import com.example.woholi.ui.diary.DiaryDailyFragment
 import com.example.woholi.ui.diary.DiaryFragment
+import com.example.woholi.ui.diary.WriteDiaryFragment
 import com.example.woholi.ui.home.HomeFragment
 import com.example.woholi.ui.login.LoginActivity
 import com.example.woholi.ui.userinfo.UserInfoFragment
@@ -16,6 +21,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.io.FileNotFoundException
+import java.io.InputStream
 
 class MainActivity : AppCompatActivity(){
 
@@ -51,15 +58,21 @@ class MainActivity : AppCompatActivity(){
 
     fun setFlag(flag: Int){
         when(flag) {
-            0 -> supportFragmentManager.beginTransaction().replace(R.id.frameLayout, homeFragemnt).commit()
+            0 -> supportFragmentManager.beginTransaction()
+                .replace(R.id.frameLayout, homeFragemnt).commit()
             1 -> supportFragmentManager.beginTransaction()
                     .replace(R.id.frameLayout, checkListFragment).commit()
-            2 -> supportFragmentManager.beginTransaction().replace(R.id.frameLayout, diaryFragment)
-                    .commit()
-            3 -> supportFragmentManager.beginTransaction().replace(R.id.frameLayout, vsFragment)
-                    .commit()
+            2 -> supportFragmentManager.beginTransaction()
+                .replace(R.id.frameLayout, diaryFragment).commit()
+            3 -> supportFragmentManager.beginTransaction()
+                .replace(R.id.frameLayout, vsFragment).commit()
             4 -> supportFragmentManager.beginTransaction()
                     .replace(R.id.frameLayout, userInfoFragment).commit()
+            5 -> supportFragmentManager.beginTransaction()
+                .add(R.id.frameLayout, WriteDiaryFragment()).addToBackStack(null).commit()
+            6 -> supportFragmentManager.beginTransaction()
+                .add(R.id.frameLayout, DiaryDailyFragment()).addToBackStack(null).commit()
+            7 -> supportFragmentManager.popBackStack()
         }
     }
 
@@ -83,4 +96,5 @@ class MainActivity : AppCompatActivity(){
             .delete()
         logOut()
     }
+
 }

@@ -14,6 +14,12 @@ class TravelItemFragment : Fragment() {
 
     private var binding: FragmentTravelItemBinding? = null
 
+    private val documents by lazy { TCheckListFragment() }
+    private val clothes by lazy {TCheckListFragment() }
+    private val beauty by lazy { TCheckListFragment() }
+    private val medicine by lazy { TCheckListFragment() }
+    private val etc by lazy { TCheckListFragment() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -22,11 +28,6 @@ class TravelItemFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         binding = FragmentTravelItemBinding.inflate(inflater, container, false)
 
-        val documents = TCheckListFragment()
-        val clothes = TCheckListFragment()
-        val beauty = TCheckListFragment()
-        val medicine = TCheckListFragment()
-        val etc = TCheckListFragment()
 
         var bundle = Bundle()
         bundle.putString("title", "document")
