@@ -58,5 +58,50 @@ class DiaryMonthlyFragment : Fragment() {
             // 있으면 daily
             //(activity as MainActivity).setFlag(6)
         }
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val deferred = readDiary().await().documents
+            val deffered2 = readPhoto(deferred)
+            initUI(deferred, deffered2)
+        }
+    }
+
+    suspend fun readPhoto(task: MutableList<DocumentSnapshot>): HashMap<String, Drawable> {
+        val map: HashMap<String, Drawable> = HashMap()
+        withContext(Dispatchers.IO) {
+            for (document in task) {
+                val url = document.data!!.get("photo").toString()
+                val curDate = document.id
+                val iStream = java.net.URL(url).content as InputStream
+                val curImage: Drawable = Drawable.createFromStream(iStream, curDate)
+                map.put(curDate, curImage)
+            }
+        }
+        return map
+    }
+
+
+    suspend fun readDiary(): Task<QuerySnapshot> {
+        return Firebase.firestore.collection("users").document(CurrentUser.uid)
+                .collection("diary").get()
+    }
+
+    fun initUI(task: MutableList<DocumentSnapshot>, photoes: HashMap<String, Drawable>) {
+        if (task != null) {
+            for (document in task) {
+                val curDate = document.id
+                val year: Int = curDate.substring(0 until 4).toInt()
+                val month: Int = curDate.substring(4 until 6).toInt()
+                val date: Int = curDate.substring(6 until 8).toInt()
+                Log.d(TAG, "${year} ${month}, ${date}")
+                val calDay = CalendarDay.from(year, month, date)
+
+                val curImage :Drawable = photoes.get(curDate)!!
+
+                binding.calenMonthly.addDecorator(CurrentDayDecorator(requireActivity(), calDay, curImage))
+
+
+            }
+        }
     }
 }
