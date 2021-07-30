@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.woholi.R
+import com.example.woholi.adapter.AddPhotoAdapter
 import com.example.woholi.databinding.FragmentDiaryBinding
 import com.example.woholi.databinding.FragmentWriteDiaryBinding
 import com.example.woholi.ui.MainActivity
@@ -31,10 +34,21 @@ class WriteDiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val curDay = arguments?.getString("curDay")
+        binding.txSelecteddate.text = "${curDay!!.substring(0 until 4)}.${curDay!!.substring(4 until 6)}.${curDay!!.substring(6 until 8)}"
+
+        val adapter : AddPhotoAdapter = AddPhotoAdapter()
+        adapter.dataList.add("https://i.ytimg.com/vi/IT5Uq2K05C0/default.jpg")
+
+        adapter.dataList.add("https://i.ytimg.com/vi/IT5Uq2K05C0/default.jpg")
+
+        adapter.dataList.add("https://i.ytimg.com/vi/IT5Uq2K05C0/default.jpg")
+        binding.recyclerViewPhoto.adapter = adapter
+        binding.recyclerViewPhoto.layoutManager = LinearLayoutManager(requireContext()).also {it.orientation = LinearLayoutManager.HORIZONTAL}
+
         binding.btnBack.setOnClickListener {
             (activity as MainActivity).setFlag(7)
         }
-
     }
 
 }

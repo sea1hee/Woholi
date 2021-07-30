@@ -14,6 +14,7 @@ import java.io.InputStream
 import java.net.URL
 
 class CurrentDayDecorator(context: Activity?, currentDay: CalendarDay, photo: Drawable) : DayViewDecorator {
+
     private var myDay = currentDay
     private var curPhoto = photo
     override fun shouldDecorate(day: CalendarDay): Boolean {
@@ -22,6 +23,7 @@ class CurrentDayDecorator(context: Activity?, currentDay: CalendarDay, photo: Dr
 
     override fun decorate(view: DayViewFacade) {
         view.setBackgroundDrawable(curPhoto)
+
 
     }
 

@@ -124,11 +124,12 @@ class SignUp : AppCompatActivity() {
         val tmpData = hashMapOf(
                 "title" to "Hello Canada World!",
                 "contents" to "I arrived!",
-                "photo" to ""
         )
 
         Firebase.firestore.collection("users").document(CurrentUser.uid)
                 .collection("diary").document(today).set(tmpData)
+        Firebase.firestore.collection("users").document(CurrentUser.uid)
+            .collection("diary").document(today).collection("photo").add(hashMapOf("url" to "https://i.ytimg.com/vi/IT5Uq2K05C0/default.jpg"))
 
         val travelData1 = arrayOf("여권", "여권 사본", "항공권(E-티켓)", "영문 보험증서", "영문 이력서", "여권 사진", "한국 운전 면허증", "해외 결제 카드(VISA, Master)", "임시 숙소 주소")
 
@@ -194,7 +195,7 @@ class SignUp : AppCompatActivity() {
 
 
     fun setProfile(){
-        Glide.with(this).load(CurrentUser.profile).into(binding.imageView)
+        Glide.with(this).load(CurrentUser.profile).circleCrop().into(binding.imageView)
     }
 
 

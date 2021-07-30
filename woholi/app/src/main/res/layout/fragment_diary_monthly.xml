@@ -10,6 +10,6 @@
         android:id="@+id/calen_monthly"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:mcv_showOtherDates="all"/>
+        app:mcv_showOtherDates="out_of_range"/>
 
 </FrameLayout>

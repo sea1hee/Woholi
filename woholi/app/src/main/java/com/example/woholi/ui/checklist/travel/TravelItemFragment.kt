@@ -49,7 +49,7 @@ class TravelItemFragment : Fragment() {
         bundle.putString("title", "etc")
         etc.arguments = bundle
 
-        val fragmentList = listOf(documents, clothes, beauty, medicine, etc)
+        val fragmentList = mutableListOf<Fragment>(documents, clothes, beauty, medicine, etc)
         val adapter = ViewPagerAdapter(requireActivity())
         adapter.fragmentList = fragmentList
         binding!!.viewPagerTravel.adapter = adapter

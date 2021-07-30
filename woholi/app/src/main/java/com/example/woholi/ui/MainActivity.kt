@@ -68,12 +68,29 @@ class MainActivity : AppCompatActivity(){
                 .replace(R.id.frameLayout, vsFragment).commit()
             4 -> supportFragmentManager.beginTransaction()
                     .replace(R.id.frameLayout, userInfoFragment).commit()
-            5 -> supportFragmentManager.beginTransaction()
-                .add(R.id.frameLayout, WriteDiaryFragment()).addToBackStack(null).commit()
-            6 -> supportFragmentManager.beginTransaction()
-                .add(R.id.frameLayout, DiaryDailyFragment()).addToBackStack(null).commit()
             7 -> supportFragmentManager.popBackStack()
         }
+    }
+
+    fun setFlag(flag: Int, curDay:String){
+        val bundle: Bundle = Bundle()
+        bundle.putString("curDay", curDay)
+        when(flag){
+            5 -> {
+                val newFragment = WriteDiaryFragment()
+                newFragment.arguments = bundle
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.frameLayout, newFragment, curDay).addToBackStack(null).commit()
+            }
+            6 -> {
+                val newFragment = DiaryDailyFragment()
+                newFragment.arguments = bundle
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.frameLayout, newFragment, curDay).addToBackStack(null).commit()
+            }
+            7 -> supportFragmentManager.popBackStack()
+        }
+
     }
 
     fun logOut(){

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.woholi.R
 import com.example.woholi.databinding.FragmentDiaryMonthlyBinding
 import com.example.woholi.model.Check
@@ -23,6 +24,8 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.io.InputStream
+import java.util.*
+import kotlin.collections.HashMap
 
 class DiaryMonthlyFragment : Fragment() {
 
@@ -53,10 +56,22 @@ class DiaryMonthlyFragment : Fragment() {
         binding.calenMonthly.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
         binding.calenMonthly.isClickable = true
         binding.calenMonthly.setOnDateChangedListener { widget, date, selected ->
-            //if 해당 날짜의 데이터없으면 write
-            (activity as MainActivity).setFlag(5)
-            // 있으면 daily
-            //(activity as MainActivity).setFlag(6)
+
+            val curMonth = if (date.month < 10) "0${date.month}" else date.month.toString()
+            val curDate = if (date.day < 10) "0${date.day}" else date.day.toString()
+            val curDay = "${date.year}${curMonth}${curDate}"
+
+            Firebase.firestore.collection("users").document(CurrentUser.uid)
+                .collection("diary").document(curDay).get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()){
+                        (activity as MainActivity).setFlag(6, "${date.year}${curMonth}${curDate}")
+                    }
+                    else{
+                        (activity as MainActivity).setFlag(5, "${date.year}${curMonth}${curDate}")
+                    }
+
+                }
         }
 
         CoroutineScope(Dispatchers.Main).launch {
