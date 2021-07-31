@@ -2,31 +2,22 @@ package com.example.woholi.ui.diary
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.viewpager2.widget.ViewPager2
+import com.example.woholi.adapter.ViewPagerAdapter
 import com.example.woholi.databinding.FragmentDiaryWeeklyBinding
 import com.example.woholi.model.CurrentUser
 import com.example.woholi.ui.MainActivity
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Calendar
 
 
 class DiaryWeeklyFragment : Fragment() {
@@ -77,10 +68,18 @@ class DiaryWeeklyFragment : Fragment() {
 
         }
 
-        binding.button.setOnClickListener {
-            binding.calenWeekly.clearSelection()
-            binding.calenWeekly.setCurrentDate(CalendarDay.today(), true)
-            binding.calenWeekly.setDateSelected(CalendarDay.today(), true)
+        val fragmentList = mutableListOf<Fragment>()
+        val adapter = ViewPagerAdapter(requireActivity())
+        adapter.fragmentList = fragmentList
+        binding.viewpagerWeekly.adapter = adapter
+
+
+        binding.viewpagerWeekly.onFocusChangeListener = View.OnFocusChangeListener{ view, hasFocus ->
+            if (hasFocus){
+                binding.calenWeekly.clearSelection()
+                binding.calenWeekly.setCurrentDate(CalendarDay.today(), true)
+                binding.calenWeekly.setDateSelected(CalendarDay.today(), true)
+            }
         }
     }
 
@@ -91,3 +90,4 @@ class DiaryWeeklyFragment : Fragment() {
         return docRef
     }
 }
+

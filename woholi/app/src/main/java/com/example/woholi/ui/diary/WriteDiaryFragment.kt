@@ -38,11 +38,6 @@ class WriteDiaryFragment : Fragment() {
         binding.txSelecteddate.text = "${curDay!!.substring(0 until 4)}.${curDay!!.substring(4 until 6)}.${curDay!!.substring(6 until 8)}"
 
         val adapter : AddPhotoAdapter = AddPhotoAdapter()
-        adapter.dataList.add("https://i.ytimg.com/vi/IT5Uq2K05C0/default.jpg")
-
-        adapter.dataList.add("https://i.ytimg.com/vi/IT5Uq2K05C0/default.jpg")
-
-        adapter.dataList.add("https://i.ytimg.com/vi/IT5Uq2K05C0/default.jpg")
         binding.recyclerViewPhoto.adapter = adapter
         binding.recyclerViewPhoto.layoutManager = LinearLayoutManager(requireContext()).also {it.orientation = LinearLayoutManager.HORIZONTAL}
 
