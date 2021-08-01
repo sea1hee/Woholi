@@ -18,7 +18,7 @@ import java.util.*
 
 class CheckListFragment : Fragment() {
 
-    private var binding : FragmentCheckListBinding? = null
+    private lateinit var binding : FragmentCheckListBinding
 
     private val travelFragment by lazy { TravelItemFragment() }
     private val shoppingFragment by lazy { ShoppingListFragment() }
@@ -34,19 +34,19 @@ class CheckListFragment : Fragment() {
         binding = FragmentCheckListBinding.inflate(inflater, container, false)
 
         childFragmentManager.beginTransaction().add(R.id.frameLayout_checklist, travelFragment).commit()
-        binding!!.fabAdd.visibility = View.INVISIBLE
+        binding.fabAdd.visibility = View.INVISIBLE
 
-        binding!!.btnShopping.setOnClickListener {
+        binding.btnShopping.setOnClickListener {
             childFragmentManager.beginTransaction().replace(R.id.frameLayout_checklist, shoppingFragment).commit()
-            binding!!.fabAdd.visibility = View.VISIBLE
+            binding.fabAdd.visibility = View.VISIBLE
         }
-        binding!!.btnTravel.setOnClickListener {
+        binding.btnTravel.setOnClickListener {
             childFragmentManager.beginTransaction().replace(R.id.frameLayout_checklist, travelFragment).commit()
-            binding!!.fabAdd.visibility = View.INVISIBLE
+            binding.fabAdd.visibility = View.INVISIBLE
             //transaction.replace(R.id.frameLayout_checklist, TravelItemFragment()).commit()
         }
 
-        binding!!.fabAdd.setOnClickListener {
+        binding.fabAdd.setOnClickListener {
             //(activity as MainActivity).setFlag(5)
             val builder = AlertDialog.Builder(requireContext())
             val dialogView = layoutInflater.inflate(R.layout.dialog_shopping, null)
@@ -64,10 +64,10 @@ class CheckListFragment : Fragment() {
                                 .document("newCategory!").set(hashMapOf("isChecked" to true))
 
                         childFragmentManager.beginTransaction().replace(R.id.frameLayout_checklist, ShoppingListFragment()).commit()
-                        binding!!.fabAdd.visibility = View.VISIBLE
+                        binding.fabAdd.visibility = View.VISIBLE
                     }
                     .show()
         }
-        return binding!!.root
+        return binding.root
     }
 }

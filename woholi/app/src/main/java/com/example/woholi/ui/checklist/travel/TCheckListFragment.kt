@@ -20,7 +20,7 @@ import kotlinx.coroutines.tasks.await
 
 class TCheckListFragment : Fragment() {
 
-    private var binding: FragmentTCheckListBinding? = null
+    private lateinit  var binding: FragmentTCheckListBinding
     val adapter: CheckListAdapter = CheckListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +41,7 @@ class TCheckListFragment : Fragment() {
             initUI(deferred, deferred2)
         }
 
-        return binding!!.root
+        return binding.root
     }
 
     suspend fun readRoutine(documentName: String?): Task<QuerySnapshot> {

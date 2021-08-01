@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class TravelItemFragment : Fragment() {
 
-    private var binding: FragmentTravelItemBinding? = null
+    private lateinit var binding: FragmentTravelItemBinding
 
     private val documents by lazy { TCheckListFragment() }
     private val clothes by lazy {TCheckListFragment() }
@@ -52,7 +52,7 @@ class TravelItemFragment : Fragment() {
         val fragmentList = mutableListOf<Fragment>(documents, clothes, beauty, medicine, etc)
         val adapter = ViewPagerAdapter(requireActivity())
         adapter.fragmentList = fragmentList
-        binding!!.viewPagerTravel.adapter = adapter
+        binding.viewPagerTravel.adapter = adapter
 
         val tabTitle = listOf<String>("서류", "의류", "화장품", "약", "기타")
         TabLayoutMediator(binding!!.tabLayout, binding!!.viewPagerTravel){tab, position ->
@@ -60,7 +60,7 @@ class TravelItemFragment : Fragment() {
         }.attach()
 
 
-        return binding!!.root
+        return binding.root
     }
 
 }
