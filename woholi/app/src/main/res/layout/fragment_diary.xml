@@ -13,7 +13,7 @@
         android:layout_marginStart="37dp"
         android:layout_marginTop="49dp"
         android:text="Today's \nDiary"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout_dairy"
+        app:layout_constraintBottom_toTopOf="@+id/calendar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,20 +24,27 @@
         android:layout_marginTop="49dp"
         android:layout_marginBottom="37dp"
         android:text="ToggleButton"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout_dairy"
+        app:layout_constraintBottom_toTopOf="@+id/calendar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tx_diary"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/frameLayout_dairy"
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tg_monthly"
+        app:mcv_showOtherDates="all">
+    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager_weekly"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tx_diary">
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@id/calendar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
