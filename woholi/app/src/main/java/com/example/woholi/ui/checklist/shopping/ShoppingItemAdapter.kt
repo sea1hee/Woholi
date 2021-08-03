@@ -1,10 +1,10 @@
-package com.example.woholi.navigation.checklist.shopping
+package com.example.woholi.ui.checklist.shopping
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.woholi.model.Check
+import com.example.woholi.model.CheckListItem
 import com.example.woholi.model.CurrentUser
 import com.example.woholi.databinding.RecyclerSCheckBinding
 import com.google.firebase.firestore.ktx.firestore
@@ -12,7 +12,7 @@ import com.google.firebase.ktx.Firebase
 
 class CheckListAdapter2: RecyclerView.Adapter<Holder2>() {
     var date: String = ""
-    var checkList = mutableListOf<Check>()
+    var checkList = mutableListOf<CheckListItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder2 {
         val binding = RecyclerSCheckBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -43,8 +43,8 @@ class CheckListAdapter2: RecyclerView.Adapter<Holder2>() {
 }
 
 class Holder2(val binding: RecyclerSCheckBinding): RecyclerView.ViewHolder(binding.root){
-    fun setCheck(check: Check){
-        binding.checkBox.isChecked = check.isChecked
-        binding.checkBox.text = check.content
+    fun setCheck(checkListItem: CheckListItem){
+        binding.checkBox.isChecked = checkListItem.isChecked
+        binding.checkBox.text = checkListItem.content
     }
 }

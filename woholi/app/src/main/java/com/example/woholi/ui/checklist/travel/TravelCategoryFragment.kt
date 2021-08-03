@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.woholi.model.Check
+import com.example.woholi.model.CheckListItem
 import com.example.woholi.model.CurrentUser
 import com.example.woholi.databinding.FragmentTCheckListBinding
-import com.example.woholi.navigation.checklist.CheckListAdapter
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
@@ -18,7 +17,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
-class TCheckListFragment : Fragment() {
+class TravelCategoryFragment : Fragment() {
 
     private lateinit  var binding: FragmentTCheckListBinding
     val adapter: CheckListAdapter = CheckListAdapter()
@@ -63,12 +62,12 @@ class TCheckListFragment : Fragment() {
     fun initUI(taskFalse: MutableList<DocumentSnapshot>, taskTrue: MutableList<DocumentSnapshot>){
         if (taskFalse != null) {
             for (document in taskFalse){
-                adapter.checkList.add(Check("${document.id}", false))
+                adapter.checkList.add(CheckListItem("${document.id}", false))
             }
         }
         if (taskTrue != null) {
             for (document in taskTrue){
-                adapter.checkList.add(Check("${document.id}", true))
+                adapter.checkList.add(CheckListItem("${document.id}", true))
             }
         }
         binding!!.recyclerView.adapter = adapter

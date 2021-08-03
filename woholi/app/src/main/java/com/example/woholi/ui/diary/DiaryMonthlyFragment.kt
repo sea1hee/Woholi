@@ -7,11 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.example.woholi.R
 import com.example.woholi.databinding.FragmentDiaryMonthlyBinding
-import com.example.woholi.model.Check
 import com.example.woholi.model.CurrentUser
 import com.example.woholi.ui.MainActivity
 import com.google.android.gms.tasks.Task
@@ -24,7 +20,6 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.io.InputStream
-import java.util.*
 import kotlin.collections.HashMap
 
 class DiaryMonthlyFragment : Fragment() {

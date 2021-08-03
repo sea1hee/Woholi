@@ -7,18 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.woholi.adapter.ViewPagerAdapter
 import com.example.woholi.databinding.FragmentTravelItemBinding
-import com.example.woholi.ui.checklist.travel.TCheckListFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class TravelItemFragment : Fragment() {
 
     private lateinit var binding: FragmentTravelItemBinding
 
-    private val documents by lazy { TCheckListFragment() }
-    private val clothes by lazy {TCheckListFragment() }
-    private val beauty by lazy { TCheckListFragment() }
-    private val medicine by lazy { TCheckListFragment() }
-    private val etc by lazy { TCheckListFragment() }
+    private val documents by lazy { TravelCategoryFragment() }
+    private val clothes by lazy {TravelCategoryFragment() }
+    private val beauty by lazy { TravelCategoryFragment() }
+    private val medicine by lazy { TravelCategoryFragment() }
+    private val etc by lazy { TravelCategoryFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

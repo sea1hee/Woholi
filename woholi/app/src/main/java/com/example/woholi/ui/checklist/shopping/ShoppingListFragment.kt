@@ -7,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.woholi.databinding.FragmentShoppingListBinding
-import com.example.woholi.model.Check
+import com.example.woholi.model.CheckListItem
 import com.example.woholi.model.CurrentUser
-import com.example.woholi.model.ShoppingList
-import com.example.woholi.navigation.checklist.shopping.ShoppingListAdapter
+import com.example.woholi.model.CheckListCategory
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -45,12 +44,12 @@ class ShoppingListFragment : Fragment() {
             val deferred = readRoutine().await().documents
             if(deferred != null) {
                 for ( document in deferred){
-                    val newShoppingList = ShoppingList()
+                    val newShoppingList = CheckListCategory()
                     newShoppingList.date = document.id
                     val deffered2 = readRoutine2(document.id).await().documents
                     for (document2 in deffered2) {
-                        newShoppingList.checks.add(
-                            Check(
+                        newShoppingList.checkListItems.add(
+                            CheckListItem(
                                 document2.id,
                                 document2.data?.get("isChecked").toString().toBoolean()
                             )
@@ -75,8 +74,8 @@ class ShoppingListFragment : Fragment() {
             .document(documentName).collection("second").get()
     }
 
-    fun addShoppingList(newList: ShoppingList){
-        adapter.shoppingList.add(newList)
+    fun addShoppingList(newCategory: CheckListCategory){
+        adapter.shoppingList.add(newCategory)
     }
 
 }
