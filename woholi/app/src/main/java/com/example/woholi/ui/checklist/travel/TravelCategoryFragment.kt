@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.woholi.databinding.FragmentTravelCategoryBinding
 import com.example.woholi.model.CheckListItem
 import com.example.woholi.model.CurrentUser
-import com.example.woholi.databinding.FragmentTCheckListBinding
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
@@ -19,7 +19,7 @@ import kotlinx.coroutines.tasks.await
 
 class TravelCategoryFragment : Fragment() {
 
-    private lateinit  var binding: FragmentTCheckListBinding
+    private lateinit  var binding: FragmentTravelCategoryBinding
     val adapter: CheckListAdapter = CheckListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +29,7 @@ class TravelCategoryFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding = FragmentTCheckListBinding.inflate(inflater, container, false)
+        binding = FragmentTravelCategoryBinding.inflate(inflater, container, false)
         adapter.checkList = mutableListOf()
 
         var documentName = arguments?.getString("title")

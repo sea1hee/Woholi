@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.woholi.model.CheckListItem
 import com.example.woholi.model.CurrentUser
-import com.example.woholi.databinding.RecyclerTCheckBinding
+import com.example.woholi.databinding.RecyclerTravelItemBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -14,7 +14,7 @@ class CheckListAdapter: RecyclerView.Adapter<Holder>() {
     var checkList = mutableListOf<CheckListItem>()
     var title: String = ""
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val binding = RecyclerTCheckBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = RecyclerTravelItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return Holder(binding)
     }
 
@@ -38,7 +38,7 @@ class CheckListAdapter: RecyclerView.Adapter<Holder>() {
     }
 }
 
-class Holder(val binding: RecyclerTCheckBinding): RecyclerView.ViewHolder(binding.root){
+class Holder(val binding: RecyclerTravelItemBinding): RecyclerView.ViewHolder(binding.root){
     fun setCheck(checkListItem: CheckListItem){
         binding.checkBox.isChecked = checkListItem.isChecked
         binding.checkBox.text = checkListItem.content
