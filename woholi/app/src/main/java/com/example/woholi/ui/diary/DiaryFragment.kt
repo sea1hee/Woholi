@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import com.example.woholi.R
 import com.example.woholi.adapter.ViewPagerAdapter
 import com.example.woholi.databinding.FragmentDiaryBinding
+import com.example.woholi.db.DiaryViewModel
 import com.example.woholi.model.CurrentUser
 import com.example.woholi.ui.MainActivity
 import com.google.android.gms.tasks.Task
@@ -21,17 +23,15 @@ import com.google.firebase.ktx.Firebase
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.net.URL
 
 class DiaryFragment : Fragment() {
 
     private lateinit var binding : FragmentDiaryBinding
+    val diaryVM by viewModels<DiaryViewModel>({requireActivity()})
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,64 +57,43 @@ class DiaryFragment : Fragment() {
 
         binding.calendar.setOnDateChangedListener { widget, date, selected ->
 
-            val curMonth = if (date.month < 10) "0${date.month}" else date.month.toString()
-            val curDate = if (date.day < 10) "0${date.day}" else date.day.toString()
-            val curDay = "${date.year}${curMonth}${curDate}"
+            val curDay = diaryVM.changeFormatDate(date)
 
-            Firebase.firestore.collection("users").document(CurrentUser.uid)
-                    .collection("diary").document(curDay).get()
-                    .addOnSuccessListener { document ->
-                        if (document.exists()){
-                            (activity as MainActivity).setFlag(6, "${date.year}${curMonth}${curDate}")
-                        }
-                        else{
-                            (activity as MainActivity).setFlag(5, "${date.year}${curMonth}${curDate}")
-                        }
-
-                    }
-        }
-
-        CoroutineScope(Dispatchers.Main).launch {
-            val deferred = readDiary().await().documents
-            val deffered2 = readPhoto(deferred)
-            initUI(deferred, deffered2)
-        }
-    }
-
-    suspend fun readPhoto(task: MutableList<DocumentSnapshot>): HashMap<String, Drawable> {
-        val map: HashMap<String, Drawable> = HashMap()
-        withContext(Dispatchers.IO) {
-            for (document in task) {
-                val url = document.data!!.get("photo").toString()
-                val curDate = document.id
-                val iStream = URL(url).content as InputStream
-                val curImage: Drawable = Drawable.createFromStream(iStream, curDate)
-                map.put(curDate, curImage)
+            if (diaryVM.existDate(date)) {
+                (activity as MainActivity).setFlag(6, curDay)
+            }
+            else{
+                (activity as MainActivity).setFlag(5, curDay)
             }
         }
-        return map
-    }
 
+        diaryVM.diaryList.observe(viewLifecycleOwner) {
+            Log.d("Repository", "Read Diary")
+            for (i in 0..diaryVM.DiaryList.size-1) {
+                val curDate = diaryVM.DiaryList[i].date
 
-    suspend fun readDiary(): Task<QuerySnapshot> {
-        return Firebase.firestore.collection("users").document(CurrentUser.uid)
-                .collection("diary").get()
-    }
-
-    fun initUI(task: MutableList<DocumentSnapshot>, photoes: HashMap<String, Drawable>) {
-        if (task != null) {
-            for (document in task) {
-                val curDate = document.id
                 val year: Int = curDate.substring(0 until 4).toInt()
                 val month: Int = curDate.substring(4 until 6).toInt()
                 val date: Int = curDate.substring(6 until 8).toInt()
                 val calDay = CalendarDay.from(year, month, date)
+                CoroutineScope(Dispatchers.IO).async {
+                    val iStream = URL(diaryVM.DiaryList[i].url[0]).content as InputStream
+                    val curImage: Drawable = Drawable.createFromStream(iStream, curDate)
 
-                val curImage: Drawable = photoes.get(curDate)!!
-
-                binding.calendar.addDecorator(CurrentDayDecorator(requireActivity(), calDay, curImage))
+                    withContext(Dispatchers.Main) {
+                        binding.calendar.addDecorator(
+                                CurrentDayDecorator(
+                                        requireActivity(),
+                                        calDay,
+                                        curImage
+                                )
+                        )
+                    }
+                }
             }
         }
+
+
     }
 
     fun setViewPager(){
