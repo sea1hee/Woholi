@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:foregroundTint="#FFFFFF"
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
 
@@ -47,15 +48,80 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#FFFFFF"
+        app:cardCornerRadius="30sp"
         app:layout_constraintBottom_toTopOf="@+id/tabLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="parent">
 
-        <ProgressBar
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/tx_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tx_degree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="TextView"
+                app:layout_constraintStart_toEndOf="@+id/tx_city"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tx_cad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/btn_workingday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tx_city" />
+
+            <TextView
+                android:id="@+id/tx_exchangerate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/btn_workingday"
+                app:layout_constraintStart_toEndOf="@+id/tx_cad"
+                app:layout_constraintTop_toBottomOf="@+id/tx_degree" />
+
+            <Button
+                android:id="@+id/btn_workingday"
+                android:layout_width="wrap_content"
+                android:layout_height="40sp"
+                android:layout_marginStart="30dp"
+                android:layout_marginBottom="20dp"
+                android:text="Working day"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.dinuscxj.progressbar.CircleProgressBar
+                android:layout_width="100sp"
+                android:layout_height="0dp"
+                android:layout_marginStart="51dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tx_exchangerate"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -86,16 +152,15 @@
             android:text="HOT VS" />
     </com.google.android.material.tabs.TabLayout>
 
-    <FrameLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewHome"
         android:layout_width="match_parent"
-        android:layout_height="342dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout2">
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
