@@ -10,7 +10,7 @@ import com.example.woholi.databinding.RecyclerShoppinglistItemBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class CheckListAdapter2: RecyclerView.Adapter<Holder2>() {
+class ShoppingItemAdapter: RecyclerView.Adapter<Holder2>() {
     var date: String = ""
     var checkList = mutableListOf<CheckListItem>()
 

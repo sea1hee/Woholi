@@ -15,7 +15,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-class Repository {
+class DiaryRepository {
 
     val TAG = "Repository"
     val db = Firebase.firestore

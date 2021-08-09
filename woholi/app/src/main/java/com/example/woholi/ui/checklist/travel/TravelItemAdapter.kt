@@ -10,7 +10,7 @@ import com.example.woholi.databinding.RecyclerTravelItemBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class CheckListAdapter: RecyclerView.Adapter<Holder>() {
+class TravelItemAdapter: RecyclerView.Adapter<Holder>() {
     var checkList = mutableListOf<CheckListItem>()
     var title: String = ""
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {

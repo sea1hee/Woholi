@@ -15,7 +15,7 @@ class DiaryViewModel : ViewModel() {
     private val _diaryList = MutableLiveData<List<Diary>>()
     var diaryList: LiveData<List<Diary>> = _diaryList
 
-    val repository = Repository()
+    val repository = DiaryRepository()
 
     init{
         viewModelScope.launch{
