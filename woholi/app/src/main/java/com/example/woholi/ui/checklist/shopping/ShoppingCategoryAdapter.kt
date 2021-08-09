@@ -12,7 +12,7 @@ import com.example.woholi.model.CheckListCategory
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class ShoppingListAdapter:RecyclerView.Adapter<Holder>() {
+class ShoppingCategoryAdapter:RecyclerView.Adapter<Holder>() {
     var shoppingList = mutableListOf<CheckListCategory>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {

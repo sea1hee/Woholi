@@ -20,7 +20,7 @@ import kotlinx.coroutines.tasks.await
 class TravelCategoryFragment : Fragment() {
 
     private lateinit  var binding: FragmentTravelCategoryBinding
-    val adapter: CheckListAdapter = CheckListAdapter()
+    val adapter: TravelItemAdapter = TravelItemAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

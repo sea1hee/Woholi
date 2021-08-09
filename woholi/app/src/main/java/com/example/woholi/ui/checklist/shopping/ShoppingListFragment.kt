@@ -25,7 +25,7 @@ import kotlinx.coroutines.tasks.await
 class ShoppingListFragment : Fragment() {
 
     lateinit var binding: FragmentShoppingListBinding
-    val adapter: ShoppingListAdapter = ShoppingListAdapter()
+    val adapter: ShoppingCategoryAdapter = ShoppingCategoryAdapter()
 
     val shoppingVm by viewModels<ShoppingListViewModel>({requireActivity()})
 
