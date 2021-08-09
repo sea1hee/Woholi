@@ -12,7 +12,7 @@ import com.example.woholi.databinding.FragmentHomeBinding
 import com.example.woholi.db.DiaryViewModel
 import com.example.woholi.db.ShoppingListViewModel
 import com.example.woholi.model.CurrentUser
-import com.example.woholi.ui.checklist.shopping.ShoppingListAdapter
+import com.example.woholi.ui.checklist.shopping.ShoppingCategoryAdapter
 import com.google.android.material.tabs.TabLayout
 
 class HomeFragment : Fragment() {
@@ -21,7 +21,7 @@ class HomeFragment : Fragment() {
     val diaryVM by viewModels<DiaryViewModel>({requireActivity()})
 
     val adapter_diary: DiaryListAdapter = DiaryListAdapter()
-    val adapter_shopping : ShoppingListAdapter = ShoppingListAdapter()
+    val adapter_shopping : ShoppingCategoryAdapter = ShoppingCategoryAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

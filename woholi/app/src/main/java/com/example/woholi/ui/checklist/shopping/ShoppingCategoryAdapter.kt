@@ -43,7 +43,7 @@ class Holder(val binding: RecyclerShoppinglistCategoryBinding): RecyclerView.Vie
         binding.txDate.text = shoppinglist.date
 
         binding.layoutEnter.visibility = View.INVISIBLE
-        val adapter: CheckListAdapter2 = CheckListAdapter2()
+        val adapter: ShoppingItemAdapter = ShoppingItemAdapter()
         adapter.date = shoppinglist.date
         adapter.checkList.addAll(shoppinglist.checkListItems)
         binding.recyclerView2.adapter = adapter
