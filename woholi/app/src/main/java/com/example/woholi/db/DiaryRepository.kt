@@ -28,7 +28,7 @@ class DiaryRepository {
                 if (document != null) {
                     val newDiary: Diary? = document.toObject(Diary::class.java)
                     if (newDiary != null) {
-                        diaryList.add(newDiary)
+                        diaryList.add(0, newDiary)
                         Log.d(TAG, "${newDiary.url}")
                     }
                 }

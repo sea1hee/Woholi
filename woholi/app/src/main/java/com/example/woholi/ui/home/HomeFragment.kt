@@ -19,6 +19,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding : FragmentHomeBinding
 
     val diaryVM by viewModels<DiaryViewModel>({requireActivity()})
+    val shoppingVM by viewModels<ShoppingListViewModel>({requireActivity()})
 
     val adapter_diary: DiaryListAdapter = DiaryListAdapter()
     val adapter_shopping : ShoppingCategoryAdapter = ShoppingCategoryAdapter()
@@ -29,8 +30,8 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -47,9 +48,15 @@ class HomeFragment : Fragment() {
                 binding.recyclerViewHome.adapter = adapter_diary
                 binding.recyclerViewHome.layoutManager = LinearLayoutManager(requireContext()).also {it.orientation = LinearLayoutManager.HORIZONTAL}
             }
-
         }
 
+        shoppingVM.shoppingList.observe(viewLifecycleOwner){
+            adapter_shopping.shoppingList = shoppingVM.ShoppingList
+            if (binding.tabLayout2.selectedTabPosition == 1){
+                binding.recyclerViewHome.adapter = adapter_shopping
+                binding.recyclerViewHome.layoutManager = LinearLayoutManager(requireContext())
+            }
+        }
 
         binding.tabLayout2.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
 
@@ -69,11 +76,9 @@ class HomeFragment : Fragment() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
             }
 
         })
