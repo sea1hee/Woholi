@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.woholi.BuildConfig
 import com.example.woholi.databinding.FragmentHomeBinding
-import com.example.woholi.db.DiaryViewModel
-import com.example.woholi.db.ShoppingListViewModel
-import com.example.woholi.db.WeatherService
+import com.example.woholi.db.*
+import com.example.woholi.db.exchange.ExchangeRate
 import com.example.woholi.db.weather.Weather
 import com.example.woholi.model.CurrentUser
 import com.example.woholi.ui.checklist.shopping.ShoppingCategoryAdapter
@@ -53,6 +52,7 @@ class HomeFragment : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             binding.txDegree.text = getDegree()
+            binding.txExchangerate.text = getExchangeRateCanada()
         }
 
 
@@ -113,5 +113,27 @@ class HomeFragment : Fragment() {
 
     suspend fun getDegree():String {
         return setWeather().main.temp.toString()
+    }
+
+    suspend fun setExchangeRate(): ExchangeRate {
+        val corou = CoroutineScope(Dispatchers.IO).async {
+            val response: ExchangeRate = ExchangeRateService.client!!.getExchangeRate(
+                    "${BuildConfig.EXCHANGE_RATE_API_KEY}"
+            )
+            response
+        }
+        return corou.await()
+    }
+
+
+    suspend fun getExchangeRateCanada(): String{
+
+        val exchangeRate = setExchangeRate()
+        for(i in 0..exchangeRate.size-1){
+            if ( exchangeRate.get(i).cur_unit == "CAD"){
+                return exchangeRate.get(i).deal_bas_r
+            }
+        }
+        return ""
     }
 }
