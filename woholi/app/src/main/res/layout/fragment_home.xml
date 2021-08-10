@@ -112,14 +112,27 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <com.dinuscxj.progressbar.CircleProgressBar
+                android:id="@+id/progressbar"
                 android:layout_width="100sp"
                 android:layout_height="0dp"
                 android:layout_marginStart="51dp"
                 android:layout_marginEnd="20dp"
+                app:style="solid_line"
+                app:progress_text_size="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tx_exchangerate"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tx_dday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/progressbar"
+                app:layout_constraintStart_toStartOf="@id/progressbar"
+                app:layout_constraintTop_toTopOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

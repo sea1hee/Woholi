@@ -16,10 +16,12 @@ import com.example.woholi.db.weather.Weather
 import com.example.woholi.model.CurrentUser
 import com.example.woholi.ui.checklist.shopping.ShoppingCategoryAdapter
 import com.google.android.material.tabs.TabLayout
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.util.*
 
 class HomeFragment : Fragment() {
     private lateinit var binding : FragmentHomeBinding
@@ -49,11 +51,13 @@ class HomeFragment : Fragment() {
         binding.txNickname.text = CurrentUser.name
 
         binding.txCity.text = CurrentUser.location
-
         CoroutineScope(Dispatchers.Main).launch {
             binding.txDegree.text = getDegree()
             binding.txExchangerate.text = getExchangeRateCanada()
         }
+        binding.txDday.text = "D + ${setDday()}"
+        binding.progressbar.progress = setDday()* 100 / 365
+
 
 
         diaryVM.diaryList.observe(viewLifecycleOwner) {
@@ -135,5 +139,24 @@ class HomeFragment : Fragment() {
             }
         }
         return ""
+    }
+
+
+    fun setDday():Int{
+        val year: Int = CurrentUser.departure!!.substring(0 until 4).toInt()
+        val month: Int = CurrentUser.departure!!.substring(4 until 6).toInt() - 1
+        val date: Int = CurrentUser.departure!!.substring(6 until 8).toInt()
+        val departureDate = Calendar.getInstance()
+        departureDate.set(year,month,date)
+        val d = departureDate.timeInMillis
+
+        val today : Calendar = Calendar.getInstance()
+        val t = today.timeInMillis
+
+        val dif = (t - d) / (24*60*60*1000)
+
+        val result = dif.toInt() + 1
+
+        return result
     }
 }
