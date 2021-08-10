@@ -19,6 +19,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "WEATHER_API_KEY", properties['weather_api_key']
+        buildConfigField "String", "EXCHANGE_RATE_API_KEY", properties['exchange_rate_api_key']
     }
 
     buildTypes {
