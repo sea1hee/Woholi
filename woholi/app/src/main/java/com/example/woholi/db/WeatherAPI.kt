@@ -12,9 +12,7 @@ class WeatherAPI {
 }
 
 object WeatherService {
-    private const val apiUrl = "api.openweathermap.org/data/2.5/"
+    private const val apiUrl = "https://api.openweathermap.org/data/2.5/"
 
     val client = WeatherAPI().getClient(apiUrl)?.create(WeatherInterface::class.java)
-}
-
 }

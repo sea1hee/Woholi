@@ -8,12 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.woholi.BuildConfig
 import com.example.woholi.databinding.FragmentHomeBinding
 import com.example.woholi.db.DiaryViewModel
 import com.example.woholi.db.ShoppingListViewModel
+import com.example.woholi.db.WeatherService
+import com.example.woholi.db.weather.Weather
 import com.example.woholi.model.CurrentUser
 import com.example.woholi.ui.checklist.shopping.ShoppingCategoryAdapter
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private lateinit var binding : FragmentHomeBinding
@@ -41,6 +48,13 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Glide.with(this).load(CurrentUser.profile).circleCrop().into(binding.imageViewProfile)
         binding.txNickname.text = CurrentUser.name
+
+        binding.txCity.text = CurrentUser.location
+
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.txDegree.text = getDegree()
+        }
+
 
         diaryVM.diaryList.observe(viewLifecycleOwner) {
             adapter_diary.diaryList = diaryVM.DiaryList
@@ -84,4 +98,20 @@ class HomeFragment : Fragment() {
         })
     }
 
+
+    suspend fun setWeather():Weather{
+        val corou = CoroutineScope(Dispatchers.IO).async {
+            val response: Weather = WeatherService.client!!.getweather(
+                    CurrentUser.location!!,
+                    "${BuildConfig.WEATHER_API_KEY}"
+            )
+            response
+        }
+
+        return corou.await()
+    }
+
+    suspend fun getDegree():String {
+        return setWeather().main.temp.toString()
+    }
 }

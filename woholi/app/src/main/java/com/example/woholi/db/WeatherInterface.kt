@@ -7,8 +7,9 @@ import retrofit2.http.Query
 interface WeatherInterface {
 
     @GET("weather")
-    fun getweather(
+    suspend fun getweather(
         @Query("q") q: String,
-        @Query("appid") appid: String
+        @Query("appid") appid: String,
+        @Query("units") units: String = "metric"
     ): Weather
 }
