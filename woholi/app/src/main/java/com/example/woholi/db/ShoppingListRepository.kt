@@ -55,4 +55,26 @@ class ShoppingListRepository {
                 .collection("checklist").document("shoppinglist").collection("first")
                 .document(documentName).collection("second").get()
     }
+
+    fun writeNewCategory(title:String){
+
+    }
+
+
+    fun writeNewContents(title:String, content:String){
+        Firebase.firestore.collection("users").document(CurrentUser.uid)
+                .collection("checklist").document("shoppinglist").collection("first")
+                .document(title).collection("second")
+                .document(content)
+                .set(hashMapOf("isChecked" to false))
+    }
+
+
+    fun updateCheckBox(title:String, text:String, isChecked: Boolean){
+        Firebase.firestore.collection("users").document(CurrentUser.uid)
+                .collection("checklist").document("shoppinglist").collection("first")
+                .document(title).collection("second")
+                .document(text)
+                .update("isChecked", isChecked)
+    }
 }
