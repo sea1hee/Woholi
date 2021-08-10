@@ -122,8 +122,11 @@ class SignUp : AppCompatActivity() {
         val today = current.format(formatter)
 
         val tmpData = hashMapOf(
+                "date" to "${today}",
                 "title" to "Hello Canada World!",
                 "contents" to "I arrived!",
+                "url" to arrayListOf<String>("https://i.ytimg.com/vi/IT5Uq2K05C0/default.jpg")
+
         )
 
         Firebase.firestore.collection("users").document(CurrentUser.uid)
