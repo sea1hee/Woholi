@@ -25,7 +25,7 @@ class ShoppingListRepository {
             if(deferred != null) {
                 for ( document in deferred){
                     val newShoppingList = CheckListCategory()
-                    newShoppingList.date = document.id
+                    newShoppingList.title = document.id
                     val deffered2 = readRoutine2(document.id).await().documents
                     for (document2 in deffered2) {
                         newShoppingList.checkListItems.add(

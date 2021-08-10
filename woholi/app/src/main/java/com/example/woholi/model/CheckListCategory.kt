@@ -1,6 +1,6 @@
 package com.example.woholi.model
 
 data class CheckListCategory(
-        var date: String = "",
+        var title: String = "",
         var checkListItems: MutableList<CheckListItem> = mutableListOf<CheckListItem>()
 )
