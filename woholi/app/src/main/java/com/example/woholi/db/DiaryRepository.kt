@@ -42,4 +42,11 @@ class DiaryRepository {
         return db.collection("users").document(CurrentUser.uid)
                 .collection("diary").get()
     }
+
+
+    fun writeDiary(diary: Diary){
+        db.collection("users").document(CurrentUser.uid)
+                .collection("diary").document(diary.date)
+                .set(diary)
+    }
 }

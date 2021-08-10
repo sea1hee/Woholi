@@ -24,6 +24,14 @@ class DiaryViewModel : ViewModel() {
         }
     }
 
+    fun writeDiary(diary: Diary){
+        DiaryList.add(diary)
+        _diaryList.value = DiaryList
+        viewModelScope.launch {
+            repository.writeDiary(diary)
+        }
+    }
+
 
     fun getDiary(curDate: String) : Diary? {
         for (i in 0..DiaryList.size-1) {
