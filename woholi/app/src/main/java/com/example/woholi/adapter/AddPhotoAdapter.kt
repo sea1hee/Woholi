@@ -1,5 +1,7 @@
 package com.example.woholi.adapter
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +10,11 @@ import com.bumptech.glide.Glide
 import com.example.woholi.R
 import com.example.woholi.databinding.RecyclerPhotoBinding
 import com.example.woholi.databinding.RecyclerPhotoHeaderBinding
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 
 class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>() {
     var dataList = mutableListOf<String>()
@@ -15,7 +22,13 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
     private val TYPE_HEADER: Int = 0
     private val TYPE_ITEM: Int = 1
 
-    private var onItemClick: View.OnClickListener? = null
+    private lateinit var itemClickListener: ItemClickListener
+    interface ItemClickListener{
+        fun onClick(v:View, p :Int)
+    }
+    fun setItemClickListener(itemClickListener: ItemClickListener){
+        this.itemClickListener = itemClickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) :BaseViewHolder{
         if (viewType == TYPE_ITEM){
@@ -41,7 +54,9 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
             holder.setItem(dataList[position-1])
         }
         else if (holder is headerHolder){
-
+            holder.binding.btnAddPhoto.setOnClickListener{
+                itemClickListener.onClick(it, position)
+            }
         }
     }
 
@@ -52,29 +67,7 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
     open class BaseViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
 
-    inner class headerHolder(val binding: RecyclerPhotoHeaderBinding):BaseViewHolder(binding.root){
-        fun setOnClick(){
-            binding.btnAddPhoto.setOnClickListener {
-                if (setDialog() == true) {
-                    callCamera()
-                } else {
-                    callAlbum()
-                }
-            }
-        }
-
-        fun setDialog():Boolean{
-            return true
-        }
-
-        fun callCamera(){
-
-        }
-
-        fun callAlbum(){
-
-        }
-    }
+    inner class headerHolder(val binding: RecyclerPhotoHeaderBinding):BaseViewHolder(binding.root){}
 
     class mainHolder(val binding: RecyclerPhotoBinding):BaseViewHolder(binding.root){
         fun setItem(data: String){
