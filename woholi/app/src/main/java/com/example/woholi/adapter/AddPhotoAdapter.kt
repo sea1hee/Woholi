@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.woholi.R
+import com.example.woholi.databinding.RecyclerPhotoBinding
+import com.example.woholi.databinding.RecyclerPhotoHeaderBinding
 
 class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>() {
     var dataList = mutableListOf<String>()
@@ -17,12 +19,12 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) :BaseViewHolder{
         if (viewType == TYPE_ITEM){
-            val mainView: View = LayoutInflater.from(parent!!.context).inflate(R.layout.recycler_photo, parent, false)
-            return mainHolder(mainView)
+            val itemBinding = RecyclerPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return mainHolder(itemBinding)
         }
         else{
-            val headView: View = LayoutInflater.from(parent!!.context).inflate(R.layout.recycler_photo_header, parent, false)
-            return headerHolder(headView)
+            val headerBinding = RecyclerPhotoHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return headerHolder(headerBinding)
         }
     }
 
@@ -38,6 +40,9 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
         if (holder is mainHolder){
             holder.setItem(dataList[position-1])
         }
+        else if (holder is headerHolder){
+
+        }
     }
 
     override fun getItemCount(): Int {
@@ -47,9 +52,31 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
     open class BaseViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
 
-    class headerHolder(itemView: View):BaseViewHolder(itemView){}
+    inner class headerHolder(val binding: RecyclerPhotoHeaderBinding):BaseViewHolder(binding.root){
+        fun setOnClick(){
+            binding.btnAddPhoto.setOnClickListener {
+                if (setDialog() == true) {
+                    callCamera()
+                } else {
+                    callAlbum()
+                }
+            }
+        }
 
-    class mainHolder(itemView: View):BaseViewHolder(itemView){
+        fun setDialog():Boolean{
+            return true
+        }
+
+        fun callCamera(){
+
+        }
+
+        fun callAlbum(){
+
+        }
+    }
+
+    class mainHolder(val binding: RecyclerPhotoBinding):BaseViewHolder(binding.root){
         fun setItem(data: String){
             Glide.with(itemView).load(data).into(itemView.findViewById(R.id.photoImage))
         }
