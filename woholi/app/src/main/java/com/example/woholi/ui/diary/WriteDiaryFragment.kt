@@ -88,7 +88,7 @@ class WriteDiaryFragment : Fragment() {
                         curDay,
                         title,
                         contents,
-                        arrayListOf("https://i.ytimg.com/vi/IT5Uq2K05C0/default.jpg")
+                        adapter.dataList
                     )
                 )
                 binding.btnBack.callOnClick()
