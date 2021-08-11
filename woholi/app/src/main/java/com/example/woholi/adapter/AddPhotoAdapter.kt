@@ -15,6 +15,8 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>() {
     var dataList = mutableListOf<String>()
@@ -71,7 +73,7 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
 
     class mainHolder(val binding: RecyclerPhotoBinding):BaseViewHolder(binding.root){
         fun setItem(data: String){
-            Glide.with(itemView).load(data).into(itemView.findViewById(R.id.photoImage))
+            Glide.with(itemView).load(data).transform(CenterCrop(), RoundedCorners(50)).into(itemView.findViewById(R.id.photoImage))
         }
     }
 
