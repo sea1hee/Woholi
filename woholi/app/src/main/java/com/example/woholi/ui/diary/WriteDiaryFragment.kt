@@ -9,20 +9,28 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.woholi.R
 import com.example.woholi.adapter.AddPhotoAdapter
 import com.example.woholi.databinding.FragmentWriteDiaryBinding
 import com.example.woholi.db.DiaryViewModel
 import com.example.woholi.model.Diary
 import com.example.woholi.ui.MainActivity
+import java.net.URL
 import java.text.SimpleDateFormat
 
 
@@ -57,10 +65,7 @@ class WriteDiaryFragment : Fragment() {
         adapter.setItemClickListener(object : AddPhotoAdapter.ItemClickListener {
             override fun onClick(v: View, p: Int) {
                 if (p == 0) {
-                    requirePermissions(
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
-                        PERM_CAMEARA
-                    )
+                    setDialog()
                 }
             }
         })
@@ -92,13 +97,41 @@ class WriteDiaryFragment : Fragment() {
 
     }
 
-    val PERM_STORAGE = 99
+    val PERM_GALLERY = 99
     val PERM_CAMEARA = 100
     val REQ_CAMERA = 101
+    val REQ_GALLERY = 102
     var realUri : Uri? = null
 
-    fun setViews(){
-        requirePermissions(arrayOf(Manifest.permission.CAMERA), PERM_CAMEARA)
+
+    fun setDialog(){
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_select_photo, null)
+        val builder = AlertDialog.Builder(requireContext()).setView(dialogView)
+        val dialog = builder.show()
+
+        val cameraBtn = dialogView.findViewById<Button>(R.id.btn_camera)
+        val galleryBtn = dialogView.findViewById<Button>(R.id.btn_gallery)
+
+        cameraBtn.setOnClickListener{
+            requirePermissions(
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                ),
+                PERM_CAMEARA
+            )
+            dialog.hide()
+        }
+        galleryBtn.setOnClickListener{
+            requirePermissions(
+                arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                ),
+                PERM_GALLERY
+            )
+            dialog.hide()
+        }
     }
 
     fun openCamera(){
@@ -108,6 +141,17 @@ class WriteDiaryFragment : Fragment() {
             realUri = uri
             intent.putExtra(MediaStore.EXTRA_OUTPUT, realUri)
             startActivityForResult(intent, REQ_CAMERA)
+        }
+    }
+
+    fun openGallery(){
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = MediaStore.Images.Media.CONTENT_TYPE
+
+        createImageUri(newFileName(), "image/jpg")?.let { uri ->
+            realUri = uri
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, realUri)
+            startActivityForResult(intent, REQ_GALLERY)
         }
     }
 
@@ -134,14 +178,20 @@ class WriteDiaryFragment : Fragment() {
                 REQ_CAMERA -> {
                     realUri?.let { url ->
                         adapter.dataList.add(realUri.toString())
+
+                        realUri = null
                     }
                     /*
-                    if ( data?.extras?.get("data") != null){
+                    if ( data?.extras?.get("data") != null) {
                         val url = data?.extras?.get("data") as URL
-                        Log.d("WriteDiary", url.toString())
                         adapter.dataList.add(url.toString())
                     }
                      */
+                }
+                REQ_GALLERY -> {
+                    data?.data?.let{ uri->
+                        adapter.dataList.add(uri.toString())
+                    }
                 }
             }
         }
@@ -150,17 +200,7 @@ class WriteDiaryFragment : Fragment() {
     fun permissionGranted(requestCode: Int){
         when(requestCode){
             PERM_CAMEARA -> openCamera()
-        }
-    }
-
-    fun permissionDenied(requestCode: Int){
-        when(requestCode){
-            PERM_STORAGE -> {
-                Toast.makeText(context, "외부 저장소 권한을 승인해야 합니다.", Toast.LENGTH_SHORT)
-            }
-            PERM_CAMEARA -> {
-                Toast.makeText(context, "카메라 권한을 승인해야 합니다.", Toast.LENGTH_SHORT)
-            }
+            PERM_GALLERY -> openGallery()
         }
     }
 
