@@ -1,45 +1,40 @@
 package com.example.woholi.ui.diary
 
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.woholi.R
 import com.example.woholi.adapter.ViewPagerAdapter
 import com.example.woholi.databinding.FragmentDiaryBinding
 import com.example.woholi.db.DiaryViewModel
-import com.example.woholi.model.CurrentUser
 import com.example.woholi.ui.MainActivity
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import kotlinx.coroutines.*
-import kotlinx.coroutines.tasks.await
+import java.io.FileNotFoundException
 import java.io.InputStream
 import java.net.URL
+
 
 class DiaryFragment : Fragment() {
 
     private lateinit var binding : FragmentDiaryBinding
-    val diaryVM by viewModels<DiaryViewModel>({requireActivity()})
+    val diaryVM by viewModels<DiaryViewModel>({ requireActivity() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDiaryBinding.inflate(inflater, container, false)
 
@@ -76,17 +71,20 @@ class DiaryFragment : Fragment() {
                 val month: Int = curDate.substring(4 until 6).toInt()
                 val date: Int = curDate.substring(6 until 8).toInt()
                 val calDay = CalendarDay.from(year, month, date)
+
+
                 CoroutineScope(Dispatchers.IO).async {
-                    val iStream = URL(diaryVM.DiaryList[i].url[0]).content as InputStream
-                    val curImage: Drawable = Drawable.createFromStream(iStream, curDate)
+                    val curUri = Uri.parse(diaryVM.DiaryList[i].url[0])
+                    val inputStream: InputStream? = activity?.contentResolver?.openInputStream(curUri)
+                    val curImage = Drawable.createFromStream(inputStream, curUri.toString())
 
                     withContext(Dispatchers.Main) {
                         binding.calendar.addDecorator(
-                                CurrentDayDecorator(
-                                        requireActivity(),
-                                        calDay,
-                                        curImage
-                                )
+                            CurrentDayDecorator(
+                                requireActivity(),
+                                calDay,
+                                curImage
+                            )
                         )
                     }
                 }
