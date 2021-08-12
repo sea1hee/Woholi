@@ -1,7 +1,6 @@
 package com.example.woholi.ui.diary
 
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,13 +13,12 @@ import com.example.woholi.adapter.ViewPagerAdapter
 import com.example.woholi.databinding.FragmentDiaryBinding
 import com.example.woholi.db.DiaryViewModel
 import com.example.woholi.ui.MainActivity
+import com.google.firebase.storage.FirebaseStorage
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import kotlinx.coroutines.*
-import java.io.FileNotFoundException
-import java.io.InputStream
-import java.net.URL
+import java.io.ByteArrayInputStream
 
 
 class DiaryFragment : Fragment() {
@@ -56,15 +54,14 @@ class DiaryFragment : Fragment() {
 
             if (diaryVM.existDate(date)) {
                 (activity as MainActivity).setFlag(6, curDay)
-            }
-            else{
+            } else {
                 (activity as MainActivity).setFlag(5, curDay)
             }
         }
 
         diaryVM.diaryList.observe(viewLifecycleOwner) {
             Log.d("Repository", "Read Diary")
-            for (i in 0..diaryVM.DiaryList.size-1) {
+            for (i in 0..diaryVM.DiaryList.size - 1) {
                 val curDate = diaryVM.DiaryList[i].date
 
                 val year: Int = curDate.substring(0 until 4).toInt()
@@ -72,28 +69,32 @@ class DiaryFragment : Fragment() {
                 val date: Int = curDate.substring(6 until 8).toInt()
                 val calDay = CalendarDay.from(year, month, date)
 
+                var islandRef = FirebaseStorage.getInstance().reference.child(diaryVM.DiaryList[i].url[0])
 
-                CoroutineScope(Dispatchers.IO).async {
-                    val curUri = Uri.parse(diaryVM.DiaryList[i].url[0])
-                    val inputStream: InputStream? = activity?.contentResolver?.openInputStream(curUri)
-                    val curImage = Drawable.createFromStream(inputStream, curUri.toString())
+                val ONE_MEGABYTE: Long = 1024 * 1024
+                islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
 
-                    withContext(Dispatchers.Main) {
-                        binding.calendar.addDecorator(
-                            CurrentDayDecorator(
-                                requireActivity(),
-                                calDay,
-                                curImage
+                    CoroutineScope(Dispatchers.IO).async {
+
+                        val drw =
+                            Drawable.createFromStream(ByteArrayInputStream(it), "articleImage")
+
+                        withContext(Dispatchers.Main) {
+                            binding.calendar.addDecorator(
+                                CurrentDayDecorator(
+                                    requireActivity(),
+                                    calDay,
+                                    drw
+                                )
                             )
-                        )
+                        }
                     }
                 }
+
             }
         }
 
-
     }
-
     fun setViewPager(){
         binding.viewpagerWeekly.isVisible = true
         val fragmentList = mutableListOf<Fragment>()

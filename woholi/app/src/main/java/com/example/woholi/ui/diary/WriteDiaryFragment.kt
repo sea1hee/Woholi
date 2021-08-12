@@ -3,8 +3,10 @@ package com.example.woholi.ui.diary
 import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -28,8 +30,12 @@ import com.example.woholi.R
 import com.example.woholi.adapter.AddPhotoAdapter
 import com.example.woholi.databinding.FragmentWriteDiaryBinding
 import com.example.woholi.db.DiaryViewModel
+import com.example.woholi.model.CurrentUser
 import com.example.woholi.model.Diary
 import com.example.woholi.ui.MainActivity
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import java.net.URL
 import java.text.SimpleDateFormat
 
@@ -41,6 +47,7 @@ class WriteDiaryFragment : Fragment() {
     val diaryVM by viewModels<DiaryViewModel>({ requireActivity() })
     val adapter: AddPhotoAdapter = AddPhotoAdapter()
 
+    lateinit var curDay : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -57,7 +64,7 @@ class WriteDiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val curDay = arguments?.getString("curDay")
+        curDay = arguments?.getString("curDay")!!
         binding.txSelecteddate.text = "${curDay!!.substring(0 until 4)}.${curDay!!.substring(4 until 6)}.${curDay!!.substring(
             6 until 8
         )}"
@@ -190,7 +197,8 @@ class WriteDiaryFragment : Fragment() {
                 }
                 REQ_GALLERY -> {
                     data?.data?.let{ uri->
-                        adapter.dataList.add(uri.toString())
+                        diaryVM.writePhoto(curDay, uri)
+                        adapter.dataList.add("${CurrentUser.uid}/${curDay}/${uri.lastPathSegment}")
                     }
                 }
             }

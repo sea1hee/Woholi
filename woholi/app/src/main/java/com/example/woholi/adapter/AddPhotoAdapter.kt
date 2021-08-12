@@ -12,11 +12,14 @@ import com.example.woholi.databinding.RecyclerPhotoBinding
 import com.example.woholi.databinding.RecyclerPhotoHeaderBinding
 import android.Manifest
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>() {
     var dataList = mutableListOf<String>()
@@ -73,9 +76,12 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
 
     class mainHolder(val binding: RecyclerPhotoBinding):BaseViewHolder(binding.root){
         fun setItem(data: String){
-            Glide.with(itemView).load(data).transform(CenterCrop(), RoundedCorners(50)).into(itemView.findViewById(R.id.photoImage))
+            val uri = Uri.parse(data)
+            FirebaseStorage.getInstance().reference.child(data).downloadUrl.addOnSuccessListener {
+                Glide.with(itemView).load(it).transform(CenterCrop(), RoundedCorners(50)).into(itemView.findViewById(R.id.photoImage))
+            }.addOnFailureListener {
+                // Handle any errors
+            }
         }
     }
-
-
 }
