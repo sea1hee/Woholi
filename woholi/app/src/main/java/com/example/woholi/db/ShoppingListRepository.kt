@@ -25,7 +25,7 @@ class ShoppingListRepository {
             if(deferred != null) {
                 for ( document in deferred){
                     val newShoppingList = CheckListCategory()
-                    newShoppingList.date = document.id
+                    newShoppingList.title = document.id
                     val deffered2 = readRoutine2(document.id).await().documents
                     for (document2 in deffered2) {
                         newShoppingList.checkListItems.add(
@@ -54,5 +54,27 @@ class ShoppingListRepository {
         return Firebase.firestore.collection("users").document(CurrentUser.uid)
                 .collection("checklist").document("shoppinglist").collection("first")
                 .document(documentName).collection("second").get()
+    }
+
+    fun writeNewCategory(title:String){
+
+    }
+
+
+    fun writeNewContents(title:String, content:String){
+        Firebase.firestore.collection("users").document(CurrentUser.uid)
+                .collection("checklist").document("shoppinglist").collection("first")
+                .document(title).collection("second")
+                .document(content)
+                .set(hashMapOf("isChecked" to false))
+    }
+
+
+    fun updateCheckBox(title:String, text:String, isChecked: Boolean){
+        Firebase.firestore.collection("users").document(CurrentUser.uid)
+                .collection("checklist").document("shoppinglist").collection("first")
+                .document(title).collection("second")
+                .document(text)
+                .update("isChecked", isChecked)
     }
 }
