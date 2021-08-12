@@ -71,7 +71,7 @@ class DiaryFragment : Fragment() {
 
                 var islandRef = FirebaseStorage.getInstance().reference.child(diaryVM.DiaryList[i].url[0])
 
-                val ONE_MEGABYTE: Long = 1024 * 1024
+                val ONE_MEGABYTE: Long = 1024 * 1024 * 10
                 islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
 
                     CoroutineScope(Dispatchers.IO).async {
