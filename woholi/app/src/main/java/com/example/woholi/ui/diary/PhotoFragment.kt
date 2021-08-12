@@ -7,7 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.woholi.R
 import com.example.woholi.databinding.FragmentPhotoBinding
+import com.google.firebase.storage.FirebaseStorage
 
 class PhotoFragment : Fragment() {
 
@@ -25,9 +29,11 @@ class PhotoFragment : Fragment() {
         binding = FragmentPhotoBinding.inflate(inflater, container, false)
 
         var photoUrl = arguments?.getString("url")
-        Glide.with(this)
-            .load(photoUrl)
-            .into(binding.imgPhoto)
+        FirebaseStorage.getInstance().reference.child(photoUrl!!).downloadUrl.addOnSuccessListener {
+            Glide.with(this).load(it).into(binding.imgPhoto)
+        }.addOnFailureListener {
+            // Handle any errors
+        }
 
         return binding.root
     }
