@@ -38,6 +38,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import java.net.URL
 import java.text.SimpleDateFormat
+import androidx.activity.OnBackPressedCallback as OnBackPressedCallback1
 
 
 class WriteDiaryFragment : Fragment() {
@@ -79,9 +80,11 @@ class WriteDiaryFragment : Fragment() {
 
         binding.recyclerViewPhoto.adapter = adapter
         binding.recyclerViewPhoto.layoutManager = LinearLayoutManager(requireContext()).also { it.orientation = LinearLayoutManager.HORIZONTAL }
-
+        
+        customOnBackPressed()
         binding.btnBack.setOnClickListener {
-            (activity as MainActivity).setFlag(7)
+            activity?.onBackPressed()
+
         }
 
         binding.btnConfirm.setOnClickListener {
@@ -102,6 +105,29 @@ class WriteDiaryFragment : Fragment() {
             }
         }
 
+    }
+
+    fun customOnBackPressed(){
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback1(true) {
+                    override fun handleOnBackPressed() {
+                        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_quit_writing, null)
+                        val builder = AlertDialog.Builder(requireContext()).setView(dialogView)
+                        val dialog = builder.show()
+
+                        val yesBtn = dialogView.findViewById<Button>(R.id.btn_yes)
+                        val NoBtn = dialogView.findViewById<Button>(R.id.btn_no)
+
+
+                        yesBtn.setOnClickListener{
+                            (activity as MainActivity).setFlag(7)
+                            dialog.dismiss()
+                        }
+                        NoBtn.setOnClickListener{
+                            dialog.dismiss()
+                        }
+                    }
+                }
+                )
     }
 
     val PERM_GALLERY = 99
