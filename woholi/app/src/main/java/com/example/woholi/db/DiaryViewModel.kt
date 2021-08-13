@@ -1,5 +1,6 @@
 package com.example.woholi.db
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,6 +22,18 @@ class DiaryViewModel : ViewModel() {
         viewModelScope.launch{
             DiaryList.addAll(repository.getDiary().toMutableList())
             _diaryList.value = DiaryList
+        }
+    }
+
+    fun writePhoto(curDate:String, uri: Uri){
+        repository.writePhoto(curDate, uri)
+    }
+
+    fun writeDiary(diary: Diary){
+        DiaryList.add(diary)
+        _diaryList.value = DiaryList
+        viewModelScope.launch {
+            repository.writeDiary(diary)
         }
     }
 

@@ -1,11 +1,25 @@
 package com.example.woholi.adapter
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.woholi.R
+import com.example.woholi.databinding.RecyclerPhotoBinding
+import com.example.woholi.databinding.RecyclerPhotoHeaderBinding
+import android.Manifest
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 
 class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>() {
     var dataList = mutableListOf<String>()
@@ -13,16 +27,22 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
     private val TYPE_HEADER: Int = 0
     private val TYPE_ITEM: Int = 1
 
-    private var onItemClick: View.OnClickListener? = null
+    private lateinit var itemClickListener: ItemClickListener
+    interface ItemClickListener{
+        fun onClick(v:View, p :Int)
+    }
+    fun setItemClickListener(itemClickListener: ItemClickListener){
+        this.itemClickListener = itemClickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) :BaseViewHolder{
         if (viewType == TYPE_ITEM){
-            val mainView: View = LayoutInflater.from(parent!!.context).inflate(R.layout.recycler_photo, parent, false)
-            return mainHolder(mainView)
+            val itemBinding = RecyclerPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return mainHolder(itemBinding)
         }
         else{
-            val headView: View = LayoutInflater.from(parent!!.context).inflate(R.layout.recycler_photo_header, parent, false)
-            return headerHolder(headView)
+            val headerBinding = RecyclerPhotoHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return headerHolder(headerBinding)
         }
     }
 
@@ -38,6 +58,11 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
         if (holder is mainHolder){
             holder.setItem(dataList[position-1])
         }
+        else if (holder is headerHolder){
+            holder.binding.btnAddPhoto.setOnClickListener{
+                itemClickListener.onClick(it, position)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -47,13 +72,16 @@ class AddPhotoAdapter() : RecyclerView.Adapter<AddPhotoAdapter.BaseViewHolder>()
     open class BaseViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
 
-    class headerHolder(itemView: View):BaseViewHolder(itemView){}
+    inner class headerHolder(val binding: RecyclerPhotoHeaderBinding):BaseViewHolder(binding.root){}
 
-    class mainHolder(itemView: View):BaseViewHolder(itemView){
+    class mainHolder(val binding: RecyclerPhotoBinding):BaseViewHolder(binding.root){
         fun setItem(data: String){
-            Glide.with(itemView).load(data).into(itemView.findViewById(R.id.photoImage))
+            val uri = Uri.parse(data)
+            FirebaseStorage.getInstance().reference.child(data).downloadUrl.addOnSuccessListener {
+                Glide.with(itemView).load(it).transform(CenterCrop(), RoundedCorners(50)).into(itemView.findViewById(R.id.photoImage))
+            }.addOnFailureListener {
+                // Handle any errors
+            }
         }
     }
-
-
 }
