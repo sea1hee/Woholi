@@ -183,8 +183,10 @@ class WriteDiaryFragment : Fragment() {
         if (resultCode == RESULT_OK){
             when(requestCode){
                 REQ_CAMERA -> {
-                    realUri?.let { url ->
-                        adapter.dataList.add(realUri.toString())
+                    realUri?.let { uri ->
+                        Log.d("Write", "${uri}")
+                        diaryVM.writePhoto(curDay, uri)
+                        adapter.dataList.add("${CurrentUser.uid}/${curDay}/${uri.lastPathSegment}")
 
                         realUri = null
                     }
@@ -197,6 +199,7 @@ class WriteDiaryFragment : Fragment() {
                 }
                 REQ_GALLERY -> {
                     data?.data?.let{ uri->
+                        Log.d("Write", "${uri}")
                         diaryVM.writePhoto(curDay, uri)
                         adapter.dataList.add("${CurrentUser.uid}/${curDay}/${uri.lastPathSegment}")
                     }
