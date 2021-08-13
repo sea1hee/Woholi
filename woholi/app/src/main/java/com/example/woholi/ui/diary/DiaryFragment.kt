@@ -48,49 +48,37 @@ class DiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.calendar.setOnDateChangedListener { widget, date, selected ->
-
-            val curDay = diaryVM.changeFormatDate(date)
-
-            if (diaryVM.existDate(date)) {
-                (activity as MainActivity).setFlag(6, curDay)
-            } else {
-                (activity as MainActivity).setFlag(5, curDay)
-            }
-        }
-
         diaryVM.diaryList.observe(viewLifecycleOwner) {
-            Log.d("Repository", "Read Diary")
-            for (i in 0..diaryVM.DiaryList.size - 1) {
-                val curDate = diaryVM.DiaryList[i].date
+            diaryVM.DiaryList.all { curDiary->
+                val curDate = curDiary.date
 
                 val year: Int = curDate.substring(0 until 4).toInt()
                 val month: Int = curDate.substring(4 until 6).toInt()
                 val date: Int = curDate.substring(6 until 8).toInt()
                 val calDay = CalendarDay.from(year, month, date)
 
-                var islandRef = FirebaseStorage.getInstance().reference.child(diaryVM.DiaryList[i].url[0])
+                var islandRef = FirebaseStorage.getInstance().reference.child(curDiary.url[0])
 
                 val ONE_MEGABYTE: Long = 1024 * 1024 * 10
-                islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+
+                islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener { it->
 
                     CoroutineScope(Dispatchers.IO).async {
 
-                        val drw =
-                            Drawable.createFromStream(ByteArrayInputStream(it), "articleImage")
+                        val drw = Drawable.createFromStream(ByteArrayInputStream(it), "articleImage")
 
                         withContext(Dispatchers.Main) {
                             binding.calendar.addDecorator(
-                                CurrentDayDecorator(
-                                    requireActivity(),
-                                    calDay,
-                                    drw
-                                )
+                                    CurrentDayDecorator(
+                                            requireActivity(),
+                                            calDay,
+                                            drw
+                                    )
                             )
                         }
                     }
                 }
-
+                true
             }
         }
 
@@ -124,6 +112,9 @@ class DiaryFragment : Fragment() {
         binding.calendar.selectionMode = MaterialCalendarView.SELECTION_MODE_SINGLE
         binding.calendar.isClickable = true
         binding.calendar.setDateSelected(CalendarDay.today(), true) // 기본으로 오늘 날짜 선택됨
+
+        binding.calendar.setOnDateChangedListener { widget, date, selected ->
+        }
     }
 
     fun setMonthly(){
@@ -133,6 +124,17 @@ class DiaryFragment : Fragment() {
 
         binding.viewpagerWeekly.isVisible = false
         binding.calendar.topbarVisible = true
+
+        binding.calendar.setOnDateChangedListener { widget, date, selected ->
+
+            val curDay = diaryVM.changeFormatDate(date)
+
+            if (diaryVM.existDate(date)) {
+                (activity as MainActivity).setFlag(6, curDay)
+            } else {
+                (activity as MainActivity).setFlag(5, curDay)
+            }
+        }
     }
 
 }
