@@ -1,11 +1,9 @@
 package com.example.woholi.ui
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.bumptech.glide.load.engine.Resource
+import androidx.annotation.Nullable
 import com.example.woholi.R
 import com.example.woholi.databinding.ActivityMainBinding
 import com.example.woholi.model.CurrentUser
@@ -17,12 +15,16 @@ import com.example.woholi.ui.home.HomeFragment
 import com.example.woholi.ui.login.LoginActivity
 import com.example.woholi.ui.userinfo.UserInfoFragment
 import com.example.woholi.ui.vs.VsFragment
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.ResultCallback
+import com.google.android.gms.common.api.Status
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.io.FileNotFoundException
-import java.io.InputStream
 
 class MainActivity : AppCompatActivity(){
 
@@ -93,11 +95,45 @@ class MainActivity : AppCompatActivity(){
 
     }
 
+
     fun logOut(){
-        FirebaseAuth.getInstance().signOut()
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
+        val auth = FirebaseAuth.getInstance()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.firebase_web_client_id))
+                .requestEmail()
+                .build()
+        val googleSignInClient = GoogleSignIn.getClient(this,gso)
+
+
+        // Build a GoogleApiClient with access to the Google Sign-In API and the options specified by gso.
+        val mGoogleApiClient = GoogleApiClient.Builder(this)
+                .enableAutoManage(this, GoogleApiClient.OnConnectionFailedListener {  })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build()
+
+        mGoogleApiClient!!.connect()
+        mGoogleApiClient!!.registerConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
+            override fun onConnected(@Nullable bundle: Bundle?) {
+                auth!!.signOut()
+                if (mGoogleApiClient!!.isConnected) {
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(object : ResultCallback<Status?> {
+                        override fun onResult(status: Status) {
+                            if (status.isSuccess()) {
+                                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                            }
+                            finish()
+                        }
+                    })
+                }
+            }
+
+            override fun onConnectionSuspended(i: Int) {
+                finish()
+            }
+        })
     }
 
     fun deleteLog(){
